@@ -1,0 +1,24 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mssql-persistent-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pv-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
