@@ -17,6 +17,12 @@ spec:
         image: houssemdocker/products-store-mvc:v2.#{Build.BuildId}#
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.5"
         env:
           - name: ConnectionStrings__ProductsContext
             valueFrom:
