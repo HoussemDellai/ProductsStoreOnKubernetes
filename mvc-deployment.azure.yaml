@@ -22,7 +22,7 @@ spec:
             cpu: "1"
             memory: "200Mi"
           requests:
-            cpu: "0.5"
+            cpu: "0.1"
         env:
           - name: ConnectionStrings__ProductsContext
             valueFrom:
