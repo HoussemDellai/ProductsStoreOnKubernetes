@@ -2,6 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 namespace: helm-namespace
+buildId: 1 # will be incremented in the CI/CD
 web:
   image:
     dockerHubId: houssemdocker
