@@ -8,7 +8,7 @@ web:
     dockerHubId: houssemdocker
     name: products-store-mvc
     tag: v2.848 # #{Build.BuildId}#
-    replicaCount: 1
+    replicaCount: 2
   port: 80
 sql:
   image:
