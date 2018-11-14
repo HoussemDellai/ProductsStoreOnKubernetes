@@ -1,0 +1,34 @@
+# We need the the StorageClass object only when we provision 
+# the hardware resources (creation of Azure Disk in this case) 
+# to run the app.
+# The Disk should be created at first, 
+# this could be done even manually, with no automation.
+# If we want to automate this, then we should do this 
+# using Infrastructure as Code (IaC) 
+# (i.e Terraform, Cloud Formation, ARM templates).
+# The CD pipeline should worry more on the repetitve tasks.
+
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: azure-disk-1gb-{{ .Values.buildId }} # each PVC should reference only one StorageClass
+  namespace: {{ .Values.namespace }}
+provisioner: kubernetes.io/azure-disk
+parameters:
+  storageaccounttype: Standard_LRS
+  kind: Managed
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pv-claim
+  namespace: {{ .Values.namespace }}
+  annotations: 
+    volume.beta.kubernetes.io/storage-class: azure-disk-1gb-{{ .Values.buildId }}
+spec:
+  storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

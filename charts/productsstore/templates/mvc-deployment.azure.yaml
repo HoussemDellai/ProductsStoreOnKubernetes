@@ -1,0 +1,49 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mvc-deployment-helm
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: mvc
+  replicas: {{ .Values.web.image.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: mvc
+    spec:
+      containers:
+      - name: mvc
+        image: {{ .Values.web.image.dockerHubId }}/{{ .Values.web.image.name }}:{{ .Values.web.image.tag }}
+        ports:
+        - containerPort: {{ .Values.web.port }}
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.1"
+        env:
+          - name: ConnectionStrings__ProductsContext
+            valueFrom:
+#              secretKeyRef:
+#                name: mssql-secret
+#                key: db-connection-string-secret
+              configMapKeyRef:
+                name: mssql-connection-configmap
+                key: db-connection-string
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mvc-service-helm
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: mvc
+  ports:
+  - protocol: TCP
+    port: {{ .Values.web.port }}
+    targetPort: {{ .Values.web.port }}
+  type: LoadBalancer

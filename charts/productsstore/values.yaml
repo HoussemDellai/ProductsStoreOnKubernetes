@@ -1,0 +1,37 @@
+# Default values for productsstore.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+namespace: helm-namespace
+buildId: 1 # will be incremented in the CI/CD
+web:
+  image:
+    dockerHubId: houssemdocker
+    name: products-store-mvc
+    tag: v2.848 # #{Build.BuildId}#
+    replicaCount: 1
+  port: 80
+sql:
+  image:
+    dockerHubId: microsoft
+    name: mssql-server-linux
+    tag: latest
+    replicaCount: 1
+  port: 1433
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
