@@ -19,6 +19,9 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 2) Create docker containers  
 	
     2.1) Introduction to Dockerfile: build, run  
+         $ docker run hello-world  
+           Hello from Docker!  
+           This message shows that your installation appears to be working correctly.  
          $ cd MvcApp  
 	2.2) $ docker build .     # don't forget the dot at the end to configure the context!  
          $ docker build --rm -f "Dockerfile" -t mvc-app:1.0 .   
