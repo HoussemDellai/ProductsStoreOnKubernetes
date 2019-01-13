@@ -18,22 +18,24 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 	
 2) Create docker containers  
 	
-    2.1) Introduction to Docker file: build, run  
-	2.2) $ docker build .     # don't forget the dot at the end to configure the context!
-         Successfully built d9d355827311 # this container ID won't be the same in your machine!  
+    2.1) Introduction to Dockerfile: build, run  
+         $ cd MvcApp  
+	2.2) $ docker build .     # don't forget the dot at the end to configure the context!  
+         $ docker build --rm -f "Dockerfile" -t mvc-app:1.0 .   
 	2.3) $ docker images  
-	2.4) $ docker run -p 5000:80 d9d355827311 --name mvc-app  # use your generated container ID  
+	2.4) $ docker run --rm -d -p 5555:80/tcp mvc-app:1.0   
 	2.5) $ docker ps  
-	2.6) Open browser on localhost:5000 (app doesn't connect to database!!)  
+	2.6) Open browser on localhost:5555 (app doesn't connect to database!!)  
 	2.7) Configure and start SQL Server on container  
 	2.8) $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
 	
 3) Push containers to Docker Hub  
 	
     3.1) Tag image, login, push  
-	3.2) $ docker tag mvc-app -t houssemdocker/mvc-app:1.0  
+	3.2) $ docker tag mvc-app:1.0 houssemdocker/mvc-app:1.0  # use your own Docker Hub ID  
 	3.3) $ docker login  
 	3.4) $ docker push houssemdocker/mvc-app:1.0  
+         Check your hub.docker.io
 	
 4) Deploy to Kubernetes using the Dashboard  
 	
