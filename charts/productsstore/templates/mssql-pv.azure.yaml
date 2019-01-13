@@ -23,8 +23,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: mssql-pv-claim
   namespace: {{ .Values.namespace }}
-  annotations: 
-    volume.beta.kubernetes.io/storage-class: azure-disk-1gb-{{ .Values.buildId }}
+#  annotations: 
+#    volume.beta.kubernetes.io/storage-class: azure-disk-1gb-{{ .Values.buildId }}
 spec:
   storageClassName: default
   accessModes:
