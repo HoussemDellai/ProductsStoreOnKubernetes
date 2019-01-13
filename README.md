@@ -4,18 +4,18 @@
 
     1.1) Microservices on Docker containers on Kubernetes hosted on the Cloud and powered by DevOps
 	
-2) Create docker containers
+2) Create docker containers  
 	
-    2.1) Introduction to Docker file: build, run
-	2.2) $ docker build -name mvc-app .
-	2.3) $ docker images
-	2.4) $ docker run -p 5000:80 mvc-app
-	2.5) $ docker ps
-	2.6) Open browser (app doesn't connect to database!!)
-	2.7) Configure and start SQL Server on container
-	2.8) $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8
+    2.1) Introduction to Docker file: build, run  
+	2.2) $ docker build -name mvc-app .  
+	2.3) $ docker images  
+	2.4) $ docker run -p 5000:80 mvc-app  
+	2.5) $ docker ps  
+	2.6) Open browser (app doesn't connect to database!!)  
+	2.7) Configure and start SQL Server on container  
+	2.8) $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
 	
-3) Push containers to Docker Hub
+3) Push containers to Docker Hub  
 	
     3.1) Tag image, login, push
 	3.2) $ docker tag mvc-app -t houssemdocker/mvc-app:1.0
