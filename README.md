@@ -22,7 +22,7 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 	2.2) $ docker build .     # don't forget the dot at the end to configure the context!
          Successfully built d9d355827311 # this container ID won't be the same in your machine!  
 	2.3) $ docker images  
-	2.4) $ docker run -p 5000:80 d9d355827311 --name mvc-app  # use your generated container ID
+	2.4) $ docker run -p 5000:80 d9d355827311 --name mvc-app  # use your generated container ID  
 	2.5) $ docker ps  
 	2.6) Open browser on localhost:5000 (app doesn't connect to database!!)  
 	2.7) Configure and start SQL Server on container  
