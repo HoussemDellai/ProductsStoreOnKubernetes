@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mvc
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  replicas: 1 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: houssemdocker/products-store-mvc:v2.#{Build.BuildId}#
+        image: houssemdocker/products-store-mvc:v2.962 #{Build.BuildId}#
         ports:
         - containerPort: 80
         resources:
