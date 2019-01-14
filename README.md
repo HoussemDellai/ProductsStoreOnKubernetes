@@ -68,7 +68,7 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 ### 7) Création des pipelines CI/CD avec Azure DevOps   
 
 	7.1) CI pipeline
-	<img src="/images/docker-ci.png">
+	<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-ci.png?raw=true">
 
 	7.2) CD pipeline  
 	
