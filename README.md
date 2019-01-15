@@ -56,13 +56,13 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 ### 6) Deploy to kubernetes using configuration YAML files  
 
 	6.1) $ kubectl apply -f mssql-secret.yaml  
-		 $ kubectl get secrets   
+	     $ kubectl get secrets   
 	6.2) $ kubectl apply -f mssql-pv.local.yaml  
-		 $ kubectl get pv  
+	     $ kubectl get pv  
 	6.3) $ kubectl apply -f mssql-deployment.yaml  
-		 $ kubectl get deployments  
+	     $ kubectl get deployments  
 	6.4  $ kubectl apply -f mvc-deployment.azure.yaml  
-		 $ kubectl get deployments  
+	     $ kubectl get deployments  
 	6.5) $ minikube config set memory 4096  # if we need to resize minikube
 	
 ### 7) Création des pipelines CI/CD avec Azure DevOps   
