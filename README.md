@@ -88,4 +88,6 @@ eShopOnContainers: https://github.com/dotnet-architecture/eShopOnContainers
 https://www.udemy.com/kubernetes-for-developers/
 Please email me if you want a free coupon :)  
 
+<a href="https://www.udemy.com/kubernetes-for-developers/">
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/houssem-dellai-udemy.png?raw=true"/>
+</a>
