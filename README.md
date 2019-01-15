@@ -64,7 +64,7 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	     $ kubectl get pv  
 	6.3) $ kubectl apply -f mssql-deployment.yaml  
 	     $ kubectl get deployments  
-	6.4  $ kubectl apply -f mvc-deployment.azure.yaml  
+	6.4  $ kubectl apply -f mvc-deployment.local.yaml  
 	     $ kubectl get deployments  
 	6.5) $ minikube config set memory 4096  # if we need to resize minikube
 	
