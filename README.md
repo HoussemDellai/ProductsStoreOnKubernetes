@@ -73,7 +73,7 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 	7.2) CD pipeline  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-cd.png?raw=true"/>
 	
-### 8) Discussion points: Scalability, Health Check, mounting volume  
+### 8) Discussion points: scalability, health check, mounting volume, resource limits...  
 
 ### 9) More resources
 
