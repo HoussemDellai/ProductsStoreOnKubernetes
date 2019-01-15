@@ -70,7 +70,7 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	
 ### 7) Create the CI/CD pipelines for using Azure DevOps   
 
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-ci.png?raw=true"/>
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
 
 	7.1) CI pipeline: builds the container and pushes it to docker hub.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-cd.png?raw=true"/>
@@ -78,7 +78,7 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	7.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-cd.png?raw=true"/>
 	
-### 8) Discussion points: scalability, health check, mounting volume, resource limits, service discovery...  
+### 8) Discussion points: scalability, health check, mounting volume, resource limits, service discovery, deploy with Helm...  
 
 ### 9) More resources
 
@@ -86,3 +86,5 @@ eShopOnContainers: https://github.com/dotnet-architecture/eShopOnContainers
 
 https://www.udemy.com/kubernetes-for-developers/
 Please email me if you want a free coupon :)  
+
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/houssem-dellai-udemy.png?raw=true"/>
