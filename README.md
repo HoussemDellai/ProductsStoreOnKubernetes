@@ -78,7 +78,7 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	7.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-cd.png?raw=true"/>
 	
-### 8) Discussion points: scalability, health check, mounting volume, resource limits...  
+### 8) Discussion points: scalability, health check, mounting volume, resource limits, service discovery...  
 
 ### 9) More resources
 
