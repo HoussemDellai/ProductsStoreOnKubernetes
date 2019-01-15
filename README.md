@@ -65,12 +65,14 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 	     $ kubectl get deployments  
 	6.5) $ minikube config set memory 4096  # if we need to resize minikube
 	
-### 7) Création des pipelines CI/CD avec Azure DevOps   
+### 7) Create the CI/CD pipelines for using Azure DevOps   
 
-	7.1) CI pipeline
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
+
+	7.1) CI pipeline: builds the container and pushes it to docker hub.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-ci.png?raw=true"/>
 
-	7.2) CD pipeline  
+	7.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-cd.png?raw=true"/>
 	
 ### 8) Discussion points: scalability, health check, mounting volume, resource limits...  
