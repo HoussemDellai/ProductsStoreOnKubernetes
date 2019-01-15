@@ -70,10 +70,10 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	
 ### 7) Create the CI/CD pipelines for using Azure DevOps   
 
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-ci.png?raw=true"/>
 
 	7.1) CI pipeline: builds the container and pushes it to docker hub.  
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-ci.png?raw=true"/>
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-cd.png?raw=true"/>
 
 	7.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/docker-cd.png?raw=true"/>
