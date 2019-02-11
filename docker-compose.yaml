@@ -1,7 +1,6 @@
 version: "3"
 services:
     web:
-      #image: webmvc:v1
       container_name: soat-mvcapp-k8s
       build: 
         dockerfile: Dockerfile
