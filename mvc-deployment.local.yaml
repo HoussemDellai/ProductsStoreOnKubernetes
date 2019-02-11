@@ -17,6 +17,19 @@ spec:
         image: houssemdocker/products-store-mvc:v1.0
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "0.1"
+            memory: "100Mi"
+        env:
+          - name: ConnectionStrings__ProductsContext
+            valueFrom:
+              secretKeyRef:
+                name: mssql-secret
+                key: db-connection-string-secret
 ---
 kind: Service
 apiVersion: v1

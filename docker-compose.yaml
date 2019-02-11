@@ -1,0 +1,25 @@
+version: "3"
+services:
+    web:
+      #image: webmvc:v1
+      container_name: soat-mvcapp-k8s
+      build: 
+        dockerfile: Dockerfile
+        context: MvcApp
+      ports:
+        - "80:80"
+      environment:
+        ConnectionStrings__ProductsContext: "Server=db;Database=ProductsContext;User=sa;Password=@Aa123456;"
+      depends_on:
+        - db
+
+    db:
+      container_name: products-sqldb-k8s
+      image: "microsoft/mssql-server-linux"
+      expose:
+        - "1433"
+      environment:
+        SA_PASSWORD: "@Aa123456"
+        ACCEPT_EULA: "Y"
+      ports:
+        - "1433:1433"
