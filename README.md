@@ -76,20 +76,26 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	     $ kubectl get deployments  
 	7.5) $ minikube config set memory 4096  # if we need to resize minikube
 	
-### 7) Create the CI/CD pipelines for using Azure DevOps   
+### 8) Create managed Kubernetes cluster in Azure using AKS  
+
+	8.1) $ az group create --location westeurope --subscription "Microsoft Azure Sponsorship" --name aks-k8s-rg  
+
+	8.2) $ az aks create --generate-ssh-keys --subscription "Microsoft Azure Sponsorship" --resource-group aks-k8s-rg --name aks-k8s  
+	
+### 9) Create the CI/CD pipelines for using Azure DevOps   
 
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
 
-	7.1) CI pipeline: builds the container and pushes it to docker hub.  
+	9.1) CI pipeline: builds the container and pushes it to docker hub.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-ci.png?raw=true"/>
 
-	7.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
+	9.2) CD pipeline: deploys the YAML manifest files into Kubernetes cluster.  
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/kubernetes-cd.png?raw=true"/>
 	
-### 8) Discussion points  
+### 10) Discussion points  
 scalability, health check, mounting volume, resource limits, service discovery, deploy with Helm...  
 
-### 9) More resources
+### 11) More resources
 
 eShopOnContainers: https://github.com/dotnet-architecture/eShopOnContainers
 
