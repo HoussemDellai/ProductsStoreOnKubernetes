@@ -79,8 +79,10 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 ### 8) Create managed Kubernetes cluster in Azure using AKS  
 
 	8.1) $ az group create --location westeurope --subscription "Microsoft Azure Sponsorship" --name aks-k8s-rg  
-
-	8.2) $ az aks create --generate-ssh-keys --subscription "Microsoft Azure Sponsorship" --resource-group aks-k8s-rg --name aks-k8s  
+	8.2) $ az aks create --generate-ssh-keys --subscription "Microsoft Azure Sponsorship" --node-count 1 --resource-group aks-k8s-rg --name aks-k8s  
+	8.3) $ az aks get-credentials --resource-group aks-k8s-rg --name aks-k8s --subscription "Microsoft Azure Sponsorship" 
+		 Merged "aks-k8s" as current context in /Users/houssem/.kube/config  
+	8.4) $ az aks browse --resource-group aks-k8s-rg --name aks-k8s --subscription "Microsoft Azure Sponsorship"  
 	
 ### 9) Create the CI/CD pipelines for using Azure DevOps   
 
