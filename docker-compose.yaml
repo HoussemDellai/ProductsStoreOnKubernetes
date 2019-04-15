@@ -1,7 +1,7 @@
 version: "3"
 services:
     web:
-      container_name: soat-mvcapp-k8s
+      container_name: mvc-app
       build: 
         dockerfile: Dockerfile
         context: MvcApp
@@ -13,7 +13,7 @@ services:
         - db
 
     db:
-      container_name: products-sqldb-k8s
+      container_name: mssql-db
       image: "microsoft/mssql-server-linux"
       expose:
         - "1433"
