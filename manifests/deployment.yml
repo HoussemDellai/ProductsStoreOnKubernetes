@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: houssemdellaiproductsstoreonkubernetes 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: houssemdellaiproductsstoreonkubernetes 
+    spec:
+      containers:
+        - name: houssemdellaiproductsstoreonkubernetes 
+          image: acrjenkinsx.azurecr.io/houssemdellaiproductsstoreonkubernetes 
+          ports:
+          - containerPort: 3317
