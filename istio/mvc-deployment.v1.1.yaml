@@ -1,0 +1,21 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mvc-app-1-1
+spec:
+  selector:
+    matchLabels:
+      app: mvc-app
+      version: "1.1"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mvc-app
+        version: "1.1"
+    spec:
+      containers:
+      - name: mvc-app
+        image: houssemdocker/products-store-mvc:v1.1
+        ports:
+        - containerPort: 80
