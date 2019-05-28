@@ -4,6 +4,11 @@
 # Locally generated Helm charts
 *.tgz
 
+# terraform
+*.terraform/
+*.tfstate
+*.tfstate.backup
+
 # User-specific files
 *.suo
 *.user
