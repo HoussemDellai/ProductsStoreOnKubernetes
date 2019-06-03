@@ -15,6 +15,7 @@ namespace MvcApp.Controllers
 
         public ProductsController(ProductsContext context)
         {
+            System.Console.WriteLine("hello");
             _context = context;
         }
 

@@ -27,8 +27,8 @@ resource "azurerm_kubernetes_cluster" "test" {
   }
 
   service_principal {
-    client_id     = "42491d86-af2f-4b58-aab4-e3ae1bde7181"
-    client_secret = "c741c9c3-c4f1-4c42-a615-fc356e4be1f3"
+    client_id     = "42491d86-af2f-4b58-aab4-e3ae1bdexxxx"
+    client_secret = "c741c9c3-c4f1-4c42-a615-fc356e4bxxxx"
   }
 
   tags = {
