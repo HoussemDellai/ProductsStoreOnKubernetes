@@ -74,7 +74,8 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	     $ kubectl get deployments  
 	7.4  $ kubectl apply -f mvc-deployment.local.yaml  
 	     $ kubectl get deployments  
-	7.5) $ minikube config set memory 4096  # if we need to resize minikube
+	7.5) $ minikube config set memory 4096  # if we need to resize minikube  
+	8.0) $ kubectl delete services,deployments,pvc,secrets --all -n default
 	
 ### 8) Create managed Kubernetes cluster in Azure using AKS  
 
