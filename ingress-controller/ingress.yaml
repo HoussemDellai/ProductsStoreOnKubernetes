@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: mvc-service.a1092af444ea4e4cbd68.westeurope.aksapp.io
+    http:
+      paths:
+      - backend:
+          serviceName: mvc-service
+          servicePort: 80
+        path: /
