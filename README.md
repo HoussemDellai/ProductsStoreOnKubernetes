@@ -18,6 +18,17 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
     
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-architect.png?raw=true" width="80%"/>
 Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
+
+
+Learn more about Kubernetes architecture:
+<a href="https://www.youtube.com/watch?v=HJ6F05Pm5mQ">
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-objects.png?raw=true" width="80%"/>
+</a>
+
+Learn more about Kubernetes objects:
+<a href="https://www.youtube.com/watch?v=pR-UlYf61uA">
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-explained.png?raw=true" width="80%"/>
+</a>
 	
 ### 2) Create docker containers  
 	
