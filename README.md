@@ -135,5 +135,5 @@ https://www.udemy.com/kubernetes-for-developers/
 Please email me if you want a free coupon :)  
 
 <a href="https://www.udemy.com/kubernetes-for-developers/">
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/udemy-courses.png?raw=true" width="60%"/>
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/udemy-courses.png?raw=true" width="90%"/>
 </a>
