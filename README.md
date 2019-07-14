@@ -17,7 +17,7 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
     1.1) The vision: Microservices on Docker containers on Kubernetes hosted on the Cloud and powered by DevOps.
     
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-architect.png?raw=true" width="80%"/>
-Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
+Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/  
 
 
 	1.2) Learn more about Kubernetes architecture:
