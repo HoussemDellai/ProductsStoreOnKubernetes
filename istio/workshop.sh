@@ -1,3 +1,6 @@
+# pre
+$ az aks browse --resource-group aks-k8s-extia-rg --name aks-k8s-extia --subscription "Microsoft Azure Sponsorship" 
+
 # Install Istion on AKS
 # https://docs.microsoft.com/en-us/azure/aks/istio-install
 
@@ -8,7 +11,7 @@ kubectl create namespace products
 
 kubectl label namespace products istio-injection=enabled
 
-kubectl get ns voting -o yaml
+kubectl get ns products -o yaml
 # apiVersion: v1
 # kind: Namespace
 # metadata:
@@ -18,7 +21,7 @@ kubectl get ns voting -o yaml
 
 # deploy the v1.0 of the application
 kubectl apply -n products -f mvc-app-v1.0.yaml
-kubectl describe pod mvc-app-1-0-565fc694d8-q9rvr --namespace products
+kubectl describe pod mvc-app-1-0-565fc694d8-q9rvr -n products
 # ...
 # Containers:
 #   mvc-app:
