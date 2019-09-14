@@ -111,3 +111,4 @@ D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.Vi
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.dll
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.pdb
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.csproj.CopyComplete
+D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
