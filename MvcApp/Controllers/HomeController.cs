@@ -5,11 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MvcApp.Models;
+using Prometheus;
 
 namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly Counter ProcessedJobCount = Metrics
+            .CreateCounter("myapp_jobs_processed_total", "Number of processed jobs.");
+
         public IActionResult Index()
         {
             return View();
@@ -25,6 +29,8 @@ namespace MvcApp.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
+
+            ProcessedJobCount.Inc();
 
             return View();
         }
