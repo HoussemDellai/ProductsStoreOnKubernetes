@@ -12544,11 +12544,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\New folder\\ProductsStoreOnKubernetes\\MvcApp\\MvcApp.csproj",
+      "projectUniqueName": "D:\\ProductsStoreOnKubernetes\\MvcApp\\MvcApp.csproj",
       "projectName": "MvcApp",
-      "projectPath": "D:\\New folder\\ProductsStoreOnKubernetes\\MvcApp\\MvcApp.csproj",
+      "projectPath": "D:\\ProductsStoreOnKubernetes\\MvcApp\\MvcApp.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\New folder\\ProductsStoreOnKubernetes\\MvcApp\\obj\\",
+      "outputPath": "D:\\ProductsStoreOnKubernetes\\MvcApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
