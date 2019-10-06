@@ -65,6 +65,8 @@ namespace MvcApp
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            // Export metrics to Prometheus
+            // https://localhost:5001/metrics
             app.UseMetricServer(url: "/metrics");
         }
     }
