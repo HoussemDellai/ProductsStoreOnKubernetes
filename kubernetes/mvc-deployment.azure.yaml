@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: houssemdocker/products-store-mvc:v2.#{Build.BuildId}# #v1.0 # #{ImageTag}# #v10 #v2.#{Build.BuildId}#
+        image: houssemdocker/products-store-mvc:v1.0 #{Build.BuildId}# #v1.0 # #{ImageTag}# #v10 #v2.#{Build.BuildId}#
         ports:
         - containerPort: 80
         resources:
@@ -45,4 +45,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-  type: NodePort #LoadBalancer
+  type: LoadBalancer

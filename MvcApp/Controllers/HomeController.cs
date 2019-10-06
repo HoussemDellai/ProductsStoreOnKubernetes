@@ -31,7 +31,7 @@ namespace MvcApp.Controllers
             ViewData["Message"] = "Your contact page.";
 
             ProcessedJobCount.Inc();
-
+            
             return View();
         }
 

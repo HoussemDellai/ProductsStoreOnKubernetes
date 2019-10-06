@@ -112,3 +112,43 @@ D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.dl
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.pdb
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.csproj.CopyComplete
 D:\New folder\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\appsettings.Development.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\appsettings.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.deps.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.runtimeconfig.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.runtimeconfig.dev.json
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.dll
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.pdb
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.Views.dll
+D:\ProductsStoreOnKubernetes\MvcApp\bin\Debug\netcoreapp2.1\MvcApp.Views.pdb
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.csprojAssemblyReference.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.RazorAssemblyInfo.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.RazorAssemblyInfo.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.AssemblyInfoInputs.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.AssemblyInfo.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.TagHelpers.input.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.TagHelpers.output.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.RazorCoreGenerate.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Home\About.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Home\Privacy.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Products\Create.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Products\Delete.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Products\Details.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Products\Edit.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Products\Index.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_Layout.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\_ViewImports.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.cshtml.g.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.RazorTargetAssemblyInfo.cache
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.RazorTargetAssemblyInfo.cs
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.Views.pdb
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.dll
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.pdb
+D:\ProductsStoreOnKubernetes\MvcApp\obj\Debug\netcoreapp2.1\MvcApp.csproj.CopyComplete

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using MvcApp.Models;
+using Prometheus;
 
 namespace MvcApp
 {
@@ -63,6 +64,8 @@ namespace MvcApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseMetricServer(url: "/metrics");
         }
     }
 }
