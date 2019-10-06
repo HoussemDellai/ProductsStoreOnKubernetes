@@ -44,6 +44,10 @@ namespace MvcApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Export metrics to Prometheus
+            // https://localhost:5001/metrics
+            app.UseMetricServer(url: "/metrics");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,10 +68,6 @@ namespace MvcApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            // Export metrics to Prometheus
-            // https://localhost:5001/metrics
-            app.UseMetricServer(url: "/metrics");
         }
     }
 }
