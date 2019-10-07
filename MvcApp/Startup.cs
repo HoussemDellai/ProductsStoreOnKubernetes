@@ -48,6 +48,19 @@ namespace MvcApp
             // https://localhost:5001/metrics
             app.UseMetricServer(url: "/metrics");
 
+            app.UseHttpMetrics(options =>
+            {
+                //options.RequestCount.Enabled = false;
+
+                //options.RequestDuration.Histogram = Metrics.CreateHistogram("myapp_http_request_duration_seconds", "Some help text",
+                //    new HistogramConfiguration
+                //    {
+                //        Buckets = Histogram.LinearBuckets(start: 1, width: 1, count: 64),
+            
+                //        LabelNames = new[] { "code", "method" }
+                //    });
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
