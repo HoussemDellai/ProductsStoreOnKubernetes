@@ -11,8 +11,8 @@ namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly Counter ProcessedJobCount = Metrics
-            .CreateCounter("myapp_jobs_processed_total", "Number of processed jobs.");
+        private static readonly Counter counter = Metrics
+            .CreateCounter("my_counter", "Metrics counter");
 
         public IActionResult Index()
         {
@@ -30,7 +30,7 @@ namespace MvcApp.Controllers
         {
             ViewData["Message"] = "Your contact page.";
 
-            ProcessedJobCount.Inc();
+            counter.Inc();
             
             return View();
         }
