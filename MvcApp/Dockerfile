@@ -8,11 +8,8 @@ WORKDIR /src
 COPY "MvcApp.csproj" .
 RUN dotnet restore "MvcApp.csproj"
 COPY . .
-# WORKDIR "/src/MvcApp"
 RUN ls
 RUN dotnet build . -c Release -o /app/build
-# "MvcApp.csproj" -c Release 
-# -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "MvcApp.csproj" -c Release -o /app/publish

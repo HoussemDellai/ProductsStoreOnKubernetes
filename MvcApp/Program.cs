@@ -24,7 +24,5 @@ namespace MvcApp
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-            // WebHost.CreateDefaultBuilder(args)
-            //     .UseStartup<Startup>();
     }
 }
