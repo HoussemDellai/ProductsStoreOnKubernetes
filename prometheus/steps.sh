@@ -1,5 +1,6 @@
 # Install Prometheus using helm Charts
-$ helm install stable/prometheus --name my-prometheus --set server.service.type=LoadBalancer --set rbac.create=false
+$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false -f prometheus.values.yml
+# $ helm install stable/prometheus --name my-prometheus --set server.service.type=LoadBalancer --set rbac.create=false
 
 $ helm get manifest my-prometheus
 
@@ -13,6 +14,7 @@ $ kubectl exec -it my-prometheus-server-5c54b66788-x87f4 -c prometheus-server --
     - mvc-service # Add service name to the targets list
 
 $ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false --set serverFiles.prometheus.yml.scrape_configs.static_configs.targets="localhost:9091" 
+# Helm rolls out the minimum change possible, so all it will do is distribute the config to the existing Prometheus containers and reload them. --web.enable_lifecycle is active by default in helm version of Prom.
 
 # Install Grafana using Helm Charts
 $ helm install --name my-grafana stable/grafana --set rbac.create=false --set service.type=LoadBalancer --set persistence.enabled=true
