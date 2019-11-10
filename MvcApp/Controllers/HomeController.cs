@@ -5,11 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MvcApp.Models;
+using Prometheus;
 
 namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly Counter counter = Metrics
+            .CreateCounter("my_counter", "Metrics counter");
+
         public IActionResult Index()
         {
             return View();
@@ -26,6 +30,8 @@ namespace MvcApp.Controllers
         {
             ViewData["Message"] = "Your contact page.";
 
+            counter.Inc();
+            
             return View();
         }
 
