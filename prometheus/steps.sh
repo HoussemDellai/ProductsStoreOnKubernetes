@@ -1,11 +1,13 @@
 # Install Prometheus using helm Charts
-$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false -f prometheus.values.yml
-# $ helm install stable/prometheus --name my-prometheus --set server.service.type=LoadBalancer --set rbac.create=false
+$ helm install stable/prometheus --name my-prometheus --set server.service.type=LoadBalancer --set rbac.create=false
+
+# Upgrade Prometheus configuartion, to scrape from the app's Service
+$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false -f prometheus.values.yaml
 
 $ helm get manifest my-prometheus
 
 # View the content of the prometheus.yml file within the Prometheus Server Pod
-$ kubectl exec -it my-prometheus-server-5c54b66788-x87f4 -c prometheus-server -- cat /etc/config/prometheus.yml 
+$ kubectl exec -it my-prometheus-server-7f577785fc-f8mfq -c prometheus-server -- cat /etc/config/prometheus.yml
 
 # Edit prometheus-server Secret
   static_configs:
@@ -13,7 +15,7 @@ $ kubectl exec -it my-prometheus-server-5c54b66788-x87f4 -c prometheus-server --
     - localhost:9090
     - mvc-service # Add service name to the targets list
 
-$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false --set serverFiles.prometheus.yml.scrape_configs.static_configs.targets="localhost:9091" 
+# $ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false --set serverFiles.prometheus.yml.scrape_configs.static_configs.targets="localhost:9091" 
 # Helm rolls out the minimum change possible, so all it will do is distribute the config to the existing Prometheus containers and reload them. --web.enable_lifecycle is active by default in helm version of Prom.
 
 # Install Grafana using Helm Charts
