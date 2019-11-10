@@ -1,27 +1,43 @@
-# Install Prometheus using helm Charts
+# Documentation for working with Prometheus and Grafana
+# Adedicated tutorial was created on this repo: https://github.com/HoussemDellai/WebAppMonitoring/blob/master/commands.sh
+
+$ mkdir WebApp
+$ dotnet new mvc
+$ dotnet run
+$ dotnet add package prometheus-net
+$ dotnet add package prometheus-net.AspNetCore
+# Addthe following code to Startup.cs class in the Configure method
+# to enable Prometheus metrics
+#   app.UseMetricServer(url: "/metrics");
+$ dotnet run
+# Open the web app on https://localhost:5001/metrics
+
+# Create a docker container
+$ docker build -t houssemdocker/webappmonitoring:prometheus .
+$ docker run -d -p 5555:80/tcp houssemdocker/webappmonitoring:prometheus
+$ docker push houssemdocker/webappmonitoring:prometheus
+
+# deploy the container into Kubernetes
+$ kubectl apply -f web-deploy-svc.yaml
+
+# Install Prometheus using Helm charts
 $ helm install stable/prometheus --name my-prometheus --set server.service.type=LoadBalancer --set rbac.create=false
 
-# Upgrade Prometheus configuartion, to scrape from the app's Service
-$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false -f prometheus.values.yaml
+# Prometheus dashboard IP address
+$ kubectl get services
 
-$ helm get manifest my-prometheus
+# Check default Prometheus configuration in prometheus.yml
+$ kubectl exec -it <your-prometheus-server> -c prometheus-server -- cat /etc/config/prometheus.yml
+# Check default Prometheus configuration in ConfigMap
+$ kubectl get configmaps
+$ kubectl describe configmap <your-prometheus-server-configmap>
 
-# View the content of the prometheus.yml file within the Prometheus Server Pod
-$ kubectl exec -it my-prometheus-server-7f577785fc-f8mfq -c prometheus-server -- cat /etc/config/prometheus.yml
-
-# Edit prometheus-server Secret
-  static_configs:
-  - targets:
-    - localhost:9090
-    - mvc-service # Add service name to the targets list
-
-# $ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false --set serverFiles.prometheus.yml.scrape_configs.static_configs.targets="localhost:9091" 
-# Helm rolls out the minimum change possible, so all it will do is distribute the config to the existing Prometheus containers and reload them. --web.enable_lifecycle is active by default in helm version of Prom.
-
-# Install Grafana using Helm Charts
-$ helm install --name my-grafana stable/grafana --set rbac.create=false --set service.type=LoadBalancer --set persistence.enabled=true
+# Add and edit values.yaml
+$ helm upgrade my-prometheus stable/prometheus --set server.service.type=LoadBalancer --set rbac.create=false  -f prometheus.values.yaml
 
 
-# Get your 'admin' user password by running:
-# kubectl get secret --namespace default my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
-# gN1pVaGFV79amZZyONNSo5odlv6vzAWnBdZeqApz
+# Check new Prometheus configuration in prometheus.yml
+$ kubectl exec -it <your-prometheus-server> -c prometheus-server -- cat /etc/config/prometheus.yml
+# Check new Prometheus configuration in ConfigMap
+$ kubectl get configmaps
+$ kubectl describe configmap <your-prometheus-server-configmap>
