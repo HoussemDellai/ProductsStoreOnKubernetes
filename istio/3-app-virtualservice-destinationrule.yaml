@@ -1,0 +1,45 @@
+# mvc-app-virtualservice.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mvc-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - mvc-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: mvc-app.products.svc.cluster.local
+        subset: v1-0
+        port:
+          number: 80
+---
+# voting-app-destinationrule-1.0.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: mvc-app
+spec:
+  host: mvc-app.products.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:
+  - name: v1-0
+    labels:
+      app: mvc-app
+      version: "1.0"
+---
+apiVersion: "authentication.istio.io/v1alpha1"
+kind: "Policy"
+metadata:
+  name: "default"
+spec:
+  peers:
+  - mtls: 
+      mode: STRICT

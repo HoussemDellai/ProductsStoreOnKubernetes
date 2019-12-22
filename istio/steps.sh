@@ -1,7 +1,7 @@
 # pre
 $ az aks browse --resource-group aks-k8s-extia-rg --name aks-k8s-extia --subscription "Microsoft Azure Sponsorship" 
 
-# Install Istion on AKS
+# Install Istio on AKS
 # https://docs.microsoft.com/en-us/azure/aks/istio-install
 
 # This workshop was highly inspired by:
@@ -32,7 +32,8 @@ kubectl describe pod mvc-app-1-0-565fc694d8-q9rvr -n products
 # ...
 
 # deploy a Gateway to access the app
-kubectl apply -n products -f mvc-app-gateway.yaml
+kubectl apply -n products -f 1-app-gateway.yaml
+kubectl apply -n products -f 2-app-virtualservice.yaml
 
 # get the public IP address to access the app
 kubectl get service istio-ingressgateway --namespace istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
