@@ -1049,7 +1049,8 @@ serverFiles:
           - targets:
             - localhost:9090
             - mvc-service # Here we add the name of the service to be scraped by Prometheus
-
+            labels:
+                service: mvc-service
       # A scrape configuration for running Prometheus on a Kubernetes cluster.
       # This uses separate scrape configs for cluster components (i.e. API server, node)
       # and services to allow each to use different authentication configs.

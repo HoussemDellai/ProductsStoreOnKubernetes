@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managedClusters_aks_poss_name": {
+            "value": null
+        },
+        "workspaces_defaultworkspace_4b72ed90_7ca3_4e76_8d0f_31a2c0bee7a3_weu_externalid": {
+            "value": null
+        },
+        "publicIPAddresses_7bdb9981_c5ee_4c1a_94bf_e48f5951d3df_externalid": {
+            "value": null
+        }
+    }
+}

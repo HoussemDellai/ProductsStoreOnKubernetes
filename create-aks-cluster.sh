@@ -1,10 +1,6 @@
 # connect to Azure via Azure CLI
 az login
 
-# create variables
-# AksName="aks-k8s-extia"
-# AksRG="aks-k8s-extia"
-
 # Create resource group
 az group create \
    --location westeurope \ 
