@@ -23,7 +23,7 @@ jobs:
         # be deployed to ECS.
         pwd
         ls
-        docker build **/MvcApp/ --file Dockerfile --tag my-image-name:$(date +%s)
+        docker build MvcApp/ --file Dockerfile --tag my-image-name:$(date +%s)
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
