@@ -11,14 +11,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
+    env:
+      DOCKER_REPOSITORY: houssemdocker
+      IMAGE_NAME: web-app
+      IMAGE_TAG: ${{ github.GITHUB_RUN_NUMBER }} # ${{ github.sha }}
+    
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      env:
-        DOCKER_REPOSITORY: houssemdocker
-        IMAGE_NAME: web-app
-        IMAGE_TAG: ${{ github.sha }}
+
 
       run: |
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
