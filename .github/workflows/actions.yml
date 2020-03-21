@@ -15,15 +15,16 @@ jobs:
     env:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
-      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+      IMAGE_TAG: 1.0.0 # $GITHUB_RUN_NUMBER # ${{ github.sha }}
     
     steps:
     - uses: actions/checkout@v2
     - name: test
       run: |
-        echo "::set-output hello"
+        echo "hello"
         echo "$IMAGE_NAME"
         echo "$IMAGE_TAG"
+        echo "$GITHUB_RUN_NUMBER"
         echo "${{ github.GITHUB_RUN_NUMBER }}"
 
     - name: Build Docker Image
