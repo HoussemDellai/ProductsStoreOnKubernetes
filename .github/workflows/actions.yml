@@ -21,12 +21,16 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
 
       run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        pwd
-        ls
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
-        docker login -u ${{ secrets.DOCKER_REPOSITORY }} -p ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+    
+    - name: Docker Login to Docker Hub
+      run:
+        docker login -u $DOCKER_REPOSITORY -p ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+        
+    - name: Docker Push Image to Docker Hub
+      run:
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
-        echo "::set-output name=image::$DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
+        
+    - name: Scan Docker Image using Trivy
+      run:
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
