@@ -33,6 +33,7 @@ jobs:
     - name: Login to Docker Hub
       run: |
         echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login "https://index.docker.io/v1" -u $DOCKER_REPOSITORY --password-stdin
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
         
     - name: Push Image to Docker Hub
       run:
