@@ -21,7 +21,7 @@ jobs:
 
     - name: Build Docker Image
       run:
-        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
     
     - name: Login to Docker Hub
       run: |
@@ -34,3 +34,30 @@ jobs:
     - name: Scan Docker Image using Trivy
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+
+    # Set the target AKS cluster.
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: aks-k8s
+        resource-group: aks-k8s
+        
+    #- uses: Azure/k8s-create-secret@v1
+    #  with:
+    #    container-registry-url: contoso.azurecr.io
+    #    container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+    #    container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+    #    secret-name: demo-k8s-secret
+
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          kubernetes/mssql-pv.azure.yaml
+          kubernetes/mssql-secret.yaml
+          kubernetes/mssql-deployment.yaml
+          kubernetes/mvc-deployment.azure.yaml
+          kubernetes/mssql-config-map.yaml
+       # images: |
+       #   demo.azurecr.io/k8sdemo:${{ github.sha }}
+       # imagepullsecrets: |
+       #   demo-k8s-secret
