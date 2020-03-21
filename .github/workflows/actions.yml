@@ -15,7 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      # run: docker build **/MvcApp/ --file Dockerfile --tag my-image-name:$(date +%s)
+      env:
+        DOCKER_REPOSITORY: houssemdocker
+        IMAGE_NAME: web-app
+        IMAGE_TAG: $(date +%s)
 
       run: |
         # Build a docker container and
@@ -23,7 +26,6 @@ jobs:
         # be deployed to ECS.
         pwd
         ls
-        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag my-image-name:$(date +%s)
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        echo "::set-output name=image::$DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
