@@ -6,7 +6,7 @@ services:
         dockerfile: Dockerfile
         context: MvcApp
       ports:
-        - "80:80"
+        - "8008:80"
       environment:
         ConnectionStrings__ProductsContext: "Server=db;Database=ProductsContext;User=sa;Password=@Aa123456;"
       depends_on:

@@ -1,0 +1,94 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managedClusters_aks_poss_name": {
+            "defaultValue": "aks-poss",
+            "type": "String"
+        },
+        "workspaces_defaultworkspace_4b72ed90_7ca3_4e76_8d0f_31a2c0bee7a3_weu_externalid": {
+            "defaultValue": "/subscriptions/4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3/resourceGroups/defaultresourcegroup-weu/providers/microsoft.operationalinsights/workspaces/defaultworkspace-4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3-weu",
+            "type": "String"
+        },
+        "publicIPAddresses_7bdb9981_c5ee_4c1a_94bf_e48f5951d3df_externalid": {
+            "defaultValue": "/subscriptions/4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3/resourceGroups/MC_aks-poss_aks-poss_westeurope/providers/Microsoft.Network/publicIPAddresses/7bdb9981-c5ee-4c1a-94bf-e48f5951d3df",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2019-10-01",
+            "name": "[parameters('managedClusters_aks_poss_name')]",
+            "location": "westeurope",
+            "properties": {
+                "kubernetesVersion": "1.14.8",
+                "dnsPrefix": "[concat(parameters('managedClusters_aks_poss_name'), '-dns')]",
+                "agentPoolProfiles": [
+                    {
+                        "name": "agentpool",
+                        "count": 2,
+                        "vmSize": "Standard_DS2_v2",
+                        "osDiskSizeGB": 100,
+                        "maxPods": 110,
+                        "type": "VirtualMachineScaleSets",
+                        "orchestratorVersion": "1.14.8",
+                        "osType": "Linux"
+                    }
+                ],
+                "servicePrincipalProfile": {
+                    "clientId": "3fcf35c4-c773-4f2f-92f5-824d1a9d02d4"
+                },
+                "addonProfiles": {
+                    "httpApplicationRouting": {
+                        "enabled": false
+                    },
+                    "omsagent": {
+                        "enabled": true,
+                        "config": {
+                            "logAnalyticsWorkspaceResourceID": "[parameters('workspaces_defaultworkspace_4b72ed90_7ca3_4e76_8d0f_31a2c0bee7a3_weu_externalid')]"
+                        }
+                    }
+                },
+                "nodeResourceGroup": "[concat('MC_', parameters('managedClusters_aks_poss_name'), '_', parameters('managedClusters_aks_poss_name'), '_westeurope')]",
+                "enableRBAC": false,
+                "networkProfile": {
+                    "networkPlugin": "kubenet",
+                    "loadBalancerSku": "Standard",
+                    "loadBalancerProfile": {
+                        "managedOutboundIPs": {
+                            "count": 1
+                        },
+                        "effectiveOutboundIPs": [
+                            {
+                                "id": "[parameters('publicIPAddresses_7bdb9981_c5ee_4c1a_94bf_e48f5951d3df_externalid')]"
+                            }
+                        ]
+                    },
+                    "podCidr": "10.244.0.0/16",
+                    "serviceCidr": "10.0.0.0/16",
+                    "dnsServiceIP": "10.0.0.10",
+                    "dockerBridgeCidr": "172.17.0.1/16"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ContainerService/managedClusters/agentPools",
+            "apiVersion": "2019-10-01",
+            "name": "[concat(parameters('managedClusters_aks_poss_name'), '/agentpool')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aks_poss_name'))]"
+            ],
+            "properties": {
+                "count": 2,
+                "vmSize": "Standard_DS2_v2",
+                "osDiskSizeGB": 100,
+                "maxPods": 110,
+                "type": "VirtualMachineScaleSets",
+                "orchestratorVersion": "1.14.8",
+                "osType": "Linux"
+            }
+        }
+    ]
+}

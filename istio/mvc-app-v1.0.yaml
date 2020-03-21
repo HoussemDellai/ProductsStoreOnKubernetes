@@ -20,6 +20,9 @@ spec:
         ports:
         - containerPort: 80
           name: http
+        env:
+          - name: ConnectionStrings__ProductsContext
+            value: "Server=mssql-service;Database=ProdcutsDB;User=SA;Password=@Aa123456;"
 ---
 apiVersion: v1
 kind: Service
