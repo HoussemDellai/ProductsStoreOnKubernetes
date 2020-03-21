@@ -18,7 +18,7 @@ jobs:
       env:
         DOCKER_REPOSITORY: houssemdocker
         IMAGE_NAME: web-app
-        IMAGE_TAG: $(date +%s)
+        IMAGE_TAG: $(date)
 
       run: |
         # Build a docker container and
