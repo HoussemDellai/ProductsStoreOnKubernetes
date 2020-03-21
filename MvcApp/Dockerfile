@@ -18,7 +18,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 RUN apt-get update && apt-get -y install ca-certificates && \
 # RUN apk add --no-cache ca-certificates && update-ca-certificates && \
-    apt-get install wget && \
+    apt-get -y install wget && \
     wget -O /microscanner https://get.aquasec.com/microscanner && \
     chmod +x /microscanner && \
     /microscanner ${token} && \
