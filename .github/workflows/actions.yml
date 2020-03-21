@@ -15,7 +15,7 @@ jobs:
     env:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
-      IMAGE_TAG: ${{ github.GITHUB_RUN_NUMBER }} # ${{ github.sha }}
+      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
     
     steps:
     - uses: actions/checkout@v2
