@@ -18,7 +18,7 @@ jobs:
       env:
         DOCKER_REPOSITORY: houssemdocker
         IMAGE_NAME: web-app
-        IMAGE_TAG: $(date)
+        IMAGE_TAG: ${{ github.sha }}
 
       run: |
         # Build a docker container and
