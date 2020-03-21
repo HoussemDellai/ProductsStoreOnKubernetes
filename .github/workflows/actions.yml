@@ -20,7 +20,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: test
-      run: 
+      run: |
+        echo "hello"
+        echo "$IMAGE_NAME"
+        echo "$IMAGE_TAG"
         echo "${{ github.GITHUB_RUN_NUMBER }}"
 
     - name: Build Docker Image
