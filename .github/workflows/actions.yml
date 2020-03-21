@@ -9,22 +9,15 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-    
     env:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
     
     steps:
+
     - uses: actions/checkout@v2
-    - name: test
-      run: |
-        echo "hello"
-        echo "$IMAGE_NAME"
-        echo "$IMAGE_TAG"
-        echo "$GITHUB_RUN_NUMBER"
 
     - name: Build Docker Image
       run:
