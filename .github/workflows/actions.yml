@@ -27,6 +27,6 @@ jobs:
         pwd
         ls
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
-        docker login -u DOCKER_REPOSITORY -p DOCKER_REPOSITORY_PASSWORD
+        docker login -u ${{ secrets.DOCKER_REPOSITORY }} -p ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         echo "::set-output name=image::$DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
