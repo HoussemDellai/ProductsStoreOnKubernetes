@@ -16,11 +16,4 @@ RUN dotnet publish "MvcApp.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN apt-get update && apt-get -y install ca-certificates && \
-# RUN apk add --no-cache ca-certificates && update-ca-certificates && \
-    apt-get -y install wget && \
-    wget -O /microscanner https://get.aquasec.com/microscanner && \
-    chmod +x /microscanner && \
-    /microscanner ${token} && \
-    rm -rf /microscanner
 ENTRYPOINT ["dotnet", "MvcApp.dll"]
