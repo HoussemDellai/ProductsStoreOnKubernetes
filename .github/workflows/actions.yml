@@ -25,7 +25,7 @@ jobs:
     
     - name: Docker Login to Docker Hub
       run:
-        docker login -u $DOCKER_REPOSITORY -p ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
         
     - name: Docker Push Image to Docker Hub
       run:
