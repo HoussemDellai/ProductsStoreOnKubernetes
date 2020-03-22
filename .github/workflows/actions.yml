@@ -56,7 +56,7 @@ jobs:
           kubernetes/mssql-secret.yaml
           kubernetes/mssql-deployment.yaml
           kubernetes/mvc-deployment.azure.yaml
-          kubernetes/mssql-config-map.yaml
+          kubernetes/mssql-configmap.yaml
        # images: |
        #   demo.azurecr.io/k8sdemo:${{ github.sha }}
        # imagepullsecrets: |
