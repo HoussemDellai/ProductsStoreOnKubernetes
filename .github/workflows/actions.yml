@@ -62,3 +62,8 @@ jobs:
        #   demo.azurecr.io/k8sdemo:${{ github.sha }}
        # imagepullsecrets: |
        #   demo-k8s-secret
+     
+    - name: Run Kube Advisor to check for Resource Limits
+      continue-on-error: true
+      run:
+        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
