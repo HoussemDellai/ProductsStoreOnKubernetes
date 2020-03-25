@@ -66,7 +66,7 @@ jobs:
     
     - name: Login to Azure (required to run terraform plan)
       run: 
-        az login --service-principal -u $AZURE_SP_CLIENT_ID -p $AZURE_SP_CLIENT_ID --tenant $AZURE_TENANT_ID
+        az login --service-principal -u $AZURE_SP_CLIENT_ID -p $AZURE_SP_CLIENT_SECRET --tenant $AZURE_TENANT_ID
     
     - name: 'Terraform Plan'
       uses: hashicorp/terraform-github-actions@master
