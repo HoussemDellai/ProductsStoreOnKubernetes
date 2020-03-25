@@ -31,6 +31,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
         enabled = false
     }
 
+    network_profile {
+      network_plugin = "kubenet"
+      network_policy = "calico"
+    }
+
     tags = {
         Environment = "Development"
     }
