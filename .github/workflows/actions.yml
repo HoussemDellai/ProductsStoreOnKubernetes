@@ -76,6 +76,7 @@ jobs:
         inlineScript: |
           az account list -o table
           az storage -h
+          terraform plan
           
    # - name: Login to Azure (required to run terraform plan)
    #   run: 
