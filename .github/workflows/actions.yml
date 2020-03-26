@@ -69,9 +69,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
      
-    - name: Login to Azure (required to run terraform plan)
-      run: 
-        az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+   # - name: Login to Azure (required to run terraform plan)
+   #   run: 
+   #     az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
     
     - name: 'Terraform Plan'
       uses: hashicorp/terraform-github-actions@master
