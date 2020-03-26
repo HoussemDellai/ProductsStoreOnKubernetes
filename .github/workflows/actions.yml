@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_REPOSITORY: houssemdocker
+      DOCKER_REPOSITORY: houssemdockera
       IMAGE_NAME: web-app
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
     
@@ -64,6 +64,11 @@ jobs:
      # env:
      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+     
     - name: Login to Azure (required to run terraform plan)
       run: 
         az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
