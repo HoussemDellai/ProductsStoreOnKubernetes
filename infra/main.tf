@@ -1,13 +1,13 @@
 provider "azurerm" {
   version = ">=2.0"
+  # The "feature" block is required for AzureRM provider 2.x.
+  features {}
   # Get the following credentials by running the command:
   # az ad sp create-for-rbac --sdk-auth
   subscription_id = var.subscription_id
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
-  # The "feature" block is required for AzureRM provider 2.x.
-  features {}
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -75,4 +75,14 @@ resource "azurerm_sql_database" "db" {
   tags = {
     environment = "production"
   }
+}
+
+resource "azurerm_sql_firewall_rule" "rule" {
+  name                = "AllowAzureServicesAndResourcesToAccessThisServer"
+  resource_group_name = azurerm_resource_group.rg.name
+  server_name         = azurerm_sql_server.sql.name
+  # The Azure feature Allow access to Azure services can be enabled 
+  # by setting start_ip_address and end_ip_address to 0.0.0.0
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }
