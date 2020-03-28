@@ -1,5 +1,7 @@
 provider "azurerm" {
   version         = ">=2.0"
+  # Get the following credentials by running the command:
+  # $ az ad sp create-for-rbac --sdk-auth
   subscription_id = var.subscription_id
   client_id       = var.client_id
   client_secret   = var.client_secret
