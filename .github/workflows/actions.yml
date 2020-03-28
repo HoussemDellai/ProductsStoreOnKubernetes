@@ -64,19 +64,19 @@ jobs:
      # env:
      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # - name: Azure Login
+    #   uses: azure/login@v1
+    #   with:
+    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.0.72
-        inlineScript: |
-          az account list -o table
-          az storage -h
-          terraform plan
+    # - name: Azure CLI script
+    #   uses: azure/CLI@v1
+    #   with:
+    #     azcliversion: 2.0.72
+    #     inlineScript: |
+    #       az account list -o table
+    #       az storage -h
+    #       terraform plan
           
    # - name: Login to Azure (required to run terraform plan)
    #   run: 
