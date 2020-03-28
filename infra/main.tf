@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 resource "azurerm_sql_server" "sql" {
   name                         = "mssql-paas"
   resource_group_name          = azurerm_resource_group.rg.name
-  location                     = "West Europe"
+  location                     = azurerm_resource_group.rg.location
   version                      = "12.0"
   administrator_login          = "houssem"
   administrator_login_password = "@Aa123456"
@@ -67,7 +67,7 @@ resource "azurerm_storage_account" "storage" {
 resource "azurerm_sql_database" "db" {
   name                = "ProductsDB"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = "West Europe"
+  location            = azurerm_resource_group.rg.location
   server_name         = azurerm_sql_server.sql.name
   create_mode         = "Default"
   edition             = "Standard"
