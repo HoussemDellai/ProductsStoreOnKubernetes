@@ -1,18 +1,98 @@
-name: Docker Image CI
+name: Build & Deploy to AKS with Terraform [demo]
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ dev ]
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
+    env:
+      DOCKER_REPOSITORY: houssemdocker
+      IMAGE_NAME: web-app
+      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+    
     steps:
+
     - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build ./MvcApp --file ./MvcApp/Dockerfile --tag webapp:$(date +%s)
+  
+    - name: Build Docker Image
+      run:
+        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
+    
+    - name: Login to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+        
+    - name: Push Image to Docker Hub
+      run:
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        
+    - name: Scan Docker Image using Trivy
+      continue-on-error: true
+      run:
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+
+    - name: 'Terraform Format'
+      uses: hashicorp/terraform-github-actions@master  
+      with:
+         tf_actions_version: 0.12.13
+         tf_actions_subcommand: 'fmt'
+         tf_actions_working_dir: './infra'
+         tf_actions_comment: false
+       
+    - name: 'Terraform Init'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: './infra'
+        tf_actions_comment: false
+
+    - name: 'Terraform Validate'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'validate'
+        tf_actions_working_dir: './infra'
+        tf_actions_comment: false
+
+    - name: 'Terraform Plan'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'plan'
+        tf_actions_working_dir: './infra'
+        tf_actions_comment: false
+
+    - name: 'Terraform Apply'
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'apply'
+        tf_actions_working_dir: './infra'
+        tf_actions_comment: false
+      
+    # Set the target AKS cluster.
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: aks-k8s
+        resource-group: aks-k8s
+        
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          kubernetes/mssql-pv.azure.yaml
+          kubernetes/mssql-secret.yaml
+          kubernetes/mssql-deployment.yaml
+          kubernetes/mvc-deployment.azure.yaml
+          kubernetes/mssql-configmap.yaml
+    
+    - name: Run Kube Advisor to check for Resource Limits
+      continue-on-error: true
+      run:
+        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
