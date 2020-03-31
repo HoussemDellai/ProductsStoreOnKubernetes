@@ -43,6 +43,9 @@ jobs:
         cluster-name: aks
         resource-group: aks
         
+    - name: Hello world
+      run: echo Hello world $GITHUB_RUN_NUMBER
+        
     - uses: cschleiden/replace-tokens@v1
       with:
         files: '["kubernetes/*.yaml"]'
