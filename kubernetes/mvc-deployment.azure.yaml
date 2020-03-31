@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: houssemdocker/mvc-app:1.0
+        image: houssemdocker/webapp: #{IMAGE_TAG}# # 1.0
         ports:
         - containerPort: 80
         resources:
