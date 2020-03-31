@@ -1,4 +1,4 @@
-name: [demo] Build & Deploy to AKS with Terraform
+name: Build & Deploy to AKS
 
 on:
   push:
