@@ -1,7 +1,7 @@
 version: "3"
 services:
     web:
-      container_name: mvc-app
+      container_name: web-app
       build: 
         dockerfile: Dockerfile
         context: MvcApp
