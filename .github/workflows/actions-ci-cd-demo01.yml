@@ -1,0 +1,58 @@
+name: Build & Deploy to AKS with Terraform [demo]
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPOSITORY: houssemdocker
+      IMAGE_NAME: web-app
+      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+    
+    steps:
+
+    - uses: actions/checkout@v2
+  
+    - name: Build Docker Image
+      run:
+        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
+    
+    - name: Login to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+        
+    - name: Push Image to Docker Hub
+      run:
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        
+    - name: Scan Docker Image using Trivy
+      continue-on-error: true
+      run:
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+
+    # Set the target AKS cluster.
+    - uses: Azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: aks-k8s
+        resource-group: aks-k8s
+        
+    - uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          kubernetes/mssql-pv.azure.yaml
+          kubernetes/mssql-secret.yaml
+          kubernetes/mssql-deployment.yaml
+          kubernetes/mvc-deployment.azure.yaml
+          kubernetes/mssql-configmap.yaml
+    
+    - name: Run Kube Advisor to check for Resource Limits
+      continue-on-error: true
+      run:
+        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
