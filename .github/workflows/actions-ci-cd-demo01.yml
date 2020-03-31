@@ -1,4 +1,4 @@
-name: Build & Deploy to AKS with Terraform [demo]
+name: [demo] Build & Deploy to AKS with Terraform
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app
-      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+      IMAGE_NAME: webapp
+      # IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
     
     steps:
 
@@ -42,6 +42,12 @@ jobs:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: aks
         resource-group: aks
+        
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["kubernetes/*.yaml"]'
+      env:
+        IMAGE_TAG: $GITHUB_RUN_NUMBER
         
     - uses: Azure/k8s-deploy@v1
       with:
