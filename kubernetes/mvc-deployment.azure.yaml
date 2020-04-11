@@ -45,4 +45,22 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-  type: LoadBalancer
+  type: LoadBalancer #NodePort
+---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: webapp-ingress
+#   namespace: default
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /api/hello-world
+#         backend:
+#           serviceName: mvc-service
+#           servicePort: 80
