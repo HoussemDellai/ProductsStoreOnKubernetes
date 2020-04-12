@@ -29,8 +29,6 @@ namespace MvcApp
                                       builder.AllowAnyOrigin()
                                              .AllowAnyMethod()
                                              .AllowAnyHeader();
-                                      //builder.WithOrigins("http://example.com",
-                                      //                    "http://www.contoso.com");
                                   });
             });
 

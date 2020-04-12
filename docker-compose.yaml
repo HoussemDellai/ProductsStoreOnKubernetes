@@ -1,24 +1,36 @@
 version: "3"
 services:
-    web:
-      container_name: web-app
-      build: 
-        dockerfile: Dockerfile
-        context: MvcApp
-      ports:
-        - "8008:80"
-      environment:
-        ConnectionStrings__ProductsContext: "Server=db;Database=ProductsContext;User=sa;Password=@Aa123456;"
-      depends_on:
-        - db
+  frontend:
+    container_name: frontend-app
+    build: 
+      dockerfile: Dockerfile
+      context: BlazorApp
+    ports:
+      - "8007:80"
+    environment:
+      PRODUCTS_API: "backend"
+    depends_on:
+      - backend
 
-    db:
-      container_name: mssql-db
-      image: "microsoft/mssql-server-linux"
-      expose:
-        - "1433"
-      environment:
-        SA_PASSWORD: "@Aa123456"
-        ACCEPT_EULA: "Y"
-      ports:
-        - "1433:1433"
+  backend:
+    container_name: web-app
+    build: 
+      dockerfile: Dockerfile
+      context: MvcApp
+    ports:
+      - "8008:80"
+    environment:
+      ConnectionStrings__ProductsContext: "Server=database;Database=ProductsContext;User=sa;Password=@Aa123456;"
+    depends_on:
+      - database
+
+  database:
+    container_name: mssql-db
+    image: "microsoft/mssql-server-linux"
+    expose:
+      - "1433"
+    environment:
+      SA_PASSWORD: "@Aa123456"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
