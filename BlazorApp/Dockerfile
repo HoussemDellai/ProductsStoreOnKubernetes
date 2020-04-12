@@ -10,3 +10,5 @@ COPY --from=build /app/output/BlazorApp/dist .
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN nginx -t
 EXPOSE 80
+EXPOSE 443
+RUN apk add curl

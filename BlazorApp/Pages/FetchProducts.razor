@@ -5,13 +5,14 @@
 <h1>Products list</h1>
 
 <p>This component demonstrates fetching products from the server.</p>
+PRODUCTS_API #: @productsApi
 
 <br />
 
 <input @bind="newProductName" placeholder="New Product Item" />
 <button class="btn btn-primary" @onclick="@AddProduct">Add Product</button>
 
-<br/>
+<br />
 
 @if (products == null)
 {
@@ -41,18 +42,34 @@ else
 @code {
     private List<Product> products;
     private string newProductName;
+    private string productsApi = "---";
 
     protected override async Task OnInitializedAsync()
     {
-        var productsApi = Environment.GetEnvironmentVariable("PRODUCTS_API");
-        
-        products = await Http.GetJsonAsync<List<Product>>(productsApi);
+
+        System.Console.WriteLine("OnInitializedAsync() started..");
+
+        productsApi = Environment.GetEnvironmentVariable("PRODUCTS_API");
+
+        System.Console.WriteLine("productsApi : {0}", productsApi);
+
+        if (productsApi == "")
+        {
+            productsApi = "is empty";
+        }
+
+        var url = "http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
+
+        var json = await Http.GetStringAsync(url);
+        //var json = await Http.GetStringAsync(url);
+        System.Console.WriteLine("json: {0}", json);
+        // products = await Http.GetJsonAsync<List<Product>>("http://backend/api/ProductsApi"); *@
     }
 
     private async Task AddProduct()
     {
         var addItem = new Product { Name = newProductName };
-        await Http.PostJsonAsync("https://localhost:5001/api/ProductsApi", addItem);
+        await Http.PostJsonAsync("http://172.19.0.1:8008/api/ProductsApi", addItem);
     }
 
     public class Product

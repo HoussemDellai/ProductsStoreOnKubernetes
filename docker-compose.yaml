@@ -8,12 +8,12 @@ services:
     ports:
       - "8007:80"
     environment:
-      PRODUCTS_API: "backend"
+      PRODUCTS_API: "backend:8008"
     depends_on:
       - backend
 
   backend:
-    container_name: web-app
+    container_name: backend-app
     build: 
       dockerfile: Dockerfile
       context: MvcApp
@@ -25,7 +25,7 @@ services:
       - database
 
   database:
-    container_name: mssql-db
+    container_name: mssql-database
     image: "microsoft/mssql-server-linux"
     expose:
       - "1433"
