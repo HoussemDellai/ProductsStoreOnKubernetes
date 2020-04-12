@@ -23,12 +23,13 @@ namespace MvcApp
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "MyAllowSpecificOrigins",
+                options.AddPolicy(name: "CorsPolicy",
                                   builder =>
                                   {
                                       builder.AllowAnyOrigin()
                                              .AllowAnyMethod()
-                                             .AllowAnyHeader();
+                                             .AllowAnyHeader()
+                                             .AllowCredentials();
                                   });
             });
 
@@ -72,7 +73,7 @@ namespace MvcApp
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseCors("MyAllowSpecificOrigins");
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

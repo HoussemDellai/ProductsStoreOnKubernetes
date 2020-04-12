@@ -1,20 +1,20 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: mvc-deployment
+  name: frontend-deployment
 spec:
   selector:
     matchLabels:
-      app: mvc
-  replicas: 1 # tells deployment to run 2 pods matching the template
+      app: frontend
+  replicas: 1
   template:
     metadata:
       labels:
-        app: mvc
+        app: frontend
     spec:
       containers:
-      - name: mvc
-        image: houssemdocker/webapp:1.2
+      - name: frontend
+        image: houssemdocker/blazorapp:1.5
         ports:
         - containerPort: 80
         resources:
@@ -25,22 +25,16 @@ spec:
             cpu: "0.1"
             memory: "100Mi"
         env:
-          - name: ConnectionStrings__ProductsContext
-            valueFrom:
-              configMapKeyRef:
-                name: mssql-connection-configmap
-                key: db-connection-string
-        #     secretKeyRef:
-        #       name: mssql-secret
-        #       key: db-connection-string-secret
+          - name: PRODUCTS_API
+            value: mvc-service
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: mvc-service
+  name: frontend-service
 spec:
   selector:
-    app: mvc
+    app: frontend
   ports:
   - protocol: TCP
     port: 80

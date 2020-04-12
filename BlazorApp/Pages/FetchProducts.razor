@@ -5,7 +5,7 @@
 <h1>Products list</h1>
 
 <p>This component demonstrates fetching products from the server.</p>
-PRODUCTS_API #: @productsApi
+PRODUCTS_API #1.5: @productsApi
 
 <br />
 
@@ -53,17 +53,26 @@ else
 
         System.Console.WriteLine("productsApi : {0}", productsApi);
 
-        if (productsApi == "")
+        var url = "http://mvc-service/api/ProductsApi";//"http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
+
+        try
         {
-            productsApi = "is empty";
+            products = await Http.GetJsonAsync<List<Product>>(url);
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e.Message);
         }
 
-        var url = "http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
-
-        var json = await Http.GetStringAsync(url);
-        //var json = await Http.GetStringAsync(url);
-        System.Console.WriteLine("json: {0}", json);
-        // products = await Http.GetJsonAsync<List<Product>>("http://backend/api/ProductsApi"); *@
+        try
+        {
+            var json = await Http.GetStringAsync(url);
+            System.Console.WriteLine("json: {0}", json);
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e.Message);
+        }
     }
 
     private async Task AddProduct()
