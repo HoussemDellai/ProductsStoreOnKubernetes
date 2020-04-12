@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: houssemdocker/blazorapp:1.5
+        image: houssemdocker/blazorapp:1.4
         ports:
         - containerPort: 80
         resources:

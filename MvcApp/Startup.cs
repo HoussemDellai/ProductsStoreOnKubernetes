@@ -28,8 +28,8 @@ namespace MvcApp
                                   {
                                       builder.AllowAnyOrigin()
                                              .AllowAnyMethod()
-                                             .AllowAnyHeader()
-                                             .AllowCredentials();
+                                             .AllowAnyHeader();
+                                             //.AllowCredentials();
                                   });
             });
 
