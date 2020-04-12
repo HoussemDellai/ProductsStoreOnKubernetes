@@ -26,7 +26,9 @@ namespace MvcApp
                 options.AddPolicy(name: "MyAllowSpecificOrigins",
                                   builder =>
                                   {
-                                      builder.AllowAnyOrigin();
+                                      builder.AllowAnyOrigin()
+                                             .AllowAnyMethod()
+                                             .AllowAnyHeader();
                                       //builder.WithOrigins("http://example.com",
                                       //                    "http://www.contoso.com");
                                   });

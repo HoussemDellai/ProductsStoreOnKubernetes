@@ -6,6 +6,9 @@
 
 <p>This component demonstrates fetching products from the server.</p>
 
+<input @bind="newProductName" placeholder="New Product Item" />
+<button @onclick="@AddItem">Add</button>
+
 @if (products == null)
 {
     <p><em>Loading...</em></p>
@@ -33,11 +36,17 @@ else
 
 @code {
     private List<Product> products;
+    private string newProductName;
 
     protected override async Task OnInitializedAsync()
     {
         products = await Http.GetJsonAsync<List<Product>>("https://localhost:5001/api/ProductsApi");
-        //products = await Http.GetJsonAsync<Product[]>("sample-data/weather.json");
+    }
+
+    private async Task AddItem()
+    {
+        var addItem = new Product { Name = newProductName };
+        await Http.PostJsonAsync("https://localhost:5001/api/ProductsApi", addItem);
     }
 
     public class Product
