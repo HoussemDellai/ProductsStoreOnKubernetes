@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MvcApp.Models
 {
@@ -14,6 +10,6 @@ namespace MvcApp.Models
             Database.EnsureCreated();
         }
 
-        public DbSet<MvcApp.Models.Product> Product { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }
