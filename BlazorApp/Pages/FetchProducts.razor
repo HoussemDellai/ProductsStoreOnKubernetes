@@ -1,4 +1,5 @@
 ﻿@page "/fetchproducts"
+@using System.Net.Http
 @inject HttpClient Http
 
 <h1>Products list</h1>
@@ -31,11 +32,12 @@ else
 }
 
 @code {
-    private Product[] products;
+    private List<Product> products;
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetJsonAsync<Product[]>("sample-data/weather.json");
+        products = await Http.GetJsonAsync<List<Product>>("https://localhost:5001/api/ProductsApi");
+        //products = await Http.GetJsonAsync<Product[]>("sample-data/weather.json");
     }
 
     public class Product
