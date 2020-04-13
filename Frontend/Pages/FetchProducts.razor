@@ -5,7 +5,7 @@
 <h1>Products list</h1>
 
 <p>This component demonstrates fetching products from the server.</p>
-PRODUCTS_API #1.5: @productsApi
+PRODUCTS_API #1.9: @productsApi
 
 <br />
 
@@ -53,7 +53,11 @@ else
 
         System.Console.WriteLine("productsApi : {0}", productsApi);
 
-        var url = "http://51.105.253.116/api/ProductsApi";//"http://mvc-service/api/ProductsApi";//"http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
+        var url = "http://mvc-service/api/ProductsApi"; // this doesn't work
+        //var url = "http://51.105.253.116/api/ProductsApi"; // this works
+        //"http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
+
+        System.Console.WriteLine("url : {0}", url);
 
         try
         {
