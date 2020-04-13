@@ -7,12 +7,18 @@
 <p>This component demonstrates fetching products from the server.</p>
 PRODUCTS_API #1.9: @productsApi
 
-<br />
+<p>
+    <input @bind="productsApi" placeholder="PRODUCTS_API" />
+</p>
 
-<input @bind="newProductName" placeholder="New Product Item" />
-<button class="btn btn-primary" @onclick="@AddProduct">Add Product</button>
+<p>
+    <input @bind="newProductName" placeholder="New Product Item" />
+    <button class="btn btn-primary" @onclick="@AddProduct">Add Product</button>
+</p>
 
-<br />
+<p>
+    <button class="btn btn-primary" @onclick="@GetProducts">Fetch Products</button>
+</p>
 
 @if (products == null)
 {
@@ -42,47 +48,29 @@ else
 @code {
     private List<Product> products;
     private string newProductName;
-    private string productsApi = "---";
+    private string productsApi = "http://51.138.13.80/api/ProductsApi";
 
     protected override async Task OnInitializedAsync()
     {
+        // productsApi = Environment.GetEnvironmentVariable("PRODUCTS_API");
 
-        System.Console.WriteLine("OnInitializedAsync() started..");
+        //var url = "http://mvc-service/api/ProductsApi"; // this doesn't work
+        //var url = "http://51.105.253.116/api/ProductsApi"; // this works
 
-        productsApi = Environment.GetEnvironmentVariable("PRODUCTS_API");
+        //products = await Http.GetJsonAsync<List<Product>>(productsApi);
+    }
 
+    private async Task GetProducts()
+    {
         System.Console.WriteLine("productsApi : {0}", productsApi);
 
-        var url = "http://mvc-service/api/ProductsApi"; // this doesn't work
-        //var url = "http://51.105.253.116/api/ProductsApi"; // this works
-        //"http://172.19.0.1:8008/api/ProductsApi";// "http://backend:8008/api/ProductsApi"
-
-        System.Console.WriteLine("url : {0}", url);
-
-        try
-        {
-            products = await Http.GetJsonAsync<List<Product>>(url);
-        }
-        catch (Exception e)
-        {
-            System.Console.WriteLine(e.Message);
-        }
-
-        try
-        {
-            var json = await Http.GetStringAsync(url);
-            System.Console.WriteLine("json: {0}", json);
-        }
-        catch (Exception e)
-        {
-            System.Console.WriteLine(e.Message);
-        }
+        products = await Http.GetJsonAsync<List<Product>>(productsApi);
     }
 
     private async Task AddProduct()
     {
         var addItem = new Product { Name = newProductName };
-        await Http.PostJsonAsync("http://172.19.0.1:8008/api/ProductsApi", addItem);
+        await Http.PostJsonAsync(productsApi, addItem);
     }
 
     public class Product
