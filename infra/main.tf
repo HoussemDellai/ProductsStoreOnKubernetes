@@ -47,8 +47,16 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 }
 
+resource "azurerm_container_registry" "acr" {
+  name                     = var.acr_name
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  sku                      = "Standard"
+  admin_enabled            = false
+}
+
 resource "azurerm_sql_server" "sql" {
-  name                         = "mssql-paas"
+  name                         = var.sql_name
   resource_group_name          = azurerm_resource_group.rg.name
   location                     = azurerm_resource_group.rg.location
   version                      = "12.0"
@@ -57,7 +65,7 @@ resource "azurerm_sql_server" "sql" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "mssqlstorageaccount"
+  name                     = var.storage_name
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
@@ -65,7 +73,7 @@ resource "azurerm_storage_account" "storage" {
 }
 
 resource "azurerm_sql_database" "db" {
-  name                = "ProductsDB"
+  name                = var.db_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   server_name         = azurerm_sql_server.sql.name
@@ -78,7 +86,7 @@ resource "azurerm_sql_database" "db" {
 }
 
 resource "azurerm_sql_firewall_rule" "rule" {
-  name                = "AllowAzureServicesAndResourcesToAccessThisServer"
+  name                = "AllowAzureServicesAndResources"
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_sql_server.sql.name
   # The Azure feature Allow access to Azure services can be enabled 

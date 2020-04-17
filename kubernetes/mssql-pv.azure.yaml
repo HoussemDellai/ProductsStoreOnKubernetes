@@ -10,7 +10,7 @@ parameters:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mssql-pv-claim
+  name: mssql-pvc
   annotations: 
     volume.beta.kubernetes.io/storage-class: azure-disk
 spec:
