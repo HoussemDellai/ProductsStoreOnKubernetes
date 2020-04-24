@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: acrforaks2020.azurecr.io/webapp:1.0 #houssemdocker/webapp:1.0 #
+        image:  houssemdocker/webapp:1.0 # acrforaks2020.azurecr.io/webapp:1.0
         ports:
         - containerPort: 80
         resources:
@@ -64,7 +64,8 @@ spec:
 #         backend:
 #           serviceName: mvc-service
 #           servicePort: 80
----apiVersion: v1
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mssql-connection-configmap
@@ -72,7 +73,7 @@ metadata:
     app: mvc
 data:
   # db-connection-string: Server=tcp:mssql-paas.database.windows.net,1433;Initial Catalog=ProductsDB;Persist Security Info=False;User ID=houssem;Password=@Aa123456;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-  db-connection-string: Server=mssql-service;Database=ProdcutsDB;User=SA;Password=@Aa123456;
+  db-connection-string: Server=mssql-service;Database=ProdcutsDB;User ID=SA;Password=@Aa123456;
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -129,7 +130,8 @@ spec:
       targetPort: 1433
       nodePort: 30200
   type: NodePort
----kind: StorageClass
+---
+kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: azure-disk
