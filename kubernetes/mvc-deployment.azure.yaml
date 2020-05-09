@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: acrforaks2020.azurecr.io/webapp:1.0
+        image: #{ACR_NAME}#.azurecr.io/webapp:1.#{Build.BuildId}#
         ports:
         - containerPort: 80
         resources:
