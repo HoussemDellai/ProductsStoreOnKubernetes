@@ -4,7 +4,7 @@ export LOCATION=#{LOCATION}#
 export INFRA_RESOURCE_GROUP=#{INFRA_RESOURCE_GROUP}#
 export TF_STATE_STORAGE_ACCOUNT_NAME=#{TF_STATE_STORAGE_ACCOUNT_NAME}#
 export TF_STATE_CONTAINER_NAME=#{TF_STATE_CONTAINER_NAME}#
-export KEYVAULT_NAME=#{KEYVAULT_NAME}#
+# export KEYVAULT_NAME=#{KEYVAULT_NAME}#
 
 # export LOCATION="westeurope"
 # export INFRA_RESOURCE_GROUP="AppInfraRG"
@@ -36,14 +36,13 @@ az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_S
 echo "Storage container $TF_STATE_CONTAINER_NAME created."
  
 # Create an Azure KeyVault
-az keyvault create -g $INFRA_RESOURCE_GROUP -l $LOCATION --name $KEYVAULT_NAME
- 
-echo "Key vault $KEYVAULT_NAME created."
+# az keyvault create -g $INFRA_RESOURCE_GROUP -l $LOCATION --name $KEYVAULT_NAME
+# echo "Key vault $KEYVAULT_NAME created."
  
 # Store the Terraform State Storage Key into KeyVault
-az keyvault secret set --name tfstate-storage-key --value $ACCOUNT_KEY --vault-name $KEYVAULT_NAME
+# az keyvault secret set --name tfstate-storage-key --value $ACCOUNT_KEY --vault-name $KEYVAULT_NAME
  
-echo "Key vault secret created."
+# echo "Key vault secret created."
  
 # Display information
 echo "Azure Storage Account and KeyVault have been created."
