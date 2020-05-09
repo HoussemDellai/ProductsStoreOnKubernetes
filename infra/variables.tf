@@ -35,6 +35,14 @@ variable db_name {
   default = "ProductsDB"
 }
 
+variable db_admin_login {
+  default = "houssem"
+}
+
+variable db_admin_password {
+  default = "@Aa123456"
+}
+
 variable storage_name {
   default = "mssqlstorageaccount2020"
 }

@@ -63,8 +63,8 @@ resource "azurerm_sql_server" "sql" {
   resource_group_name          = azurerm_resource_group.rg.name
   location                     = azurerm_resource_group.rg.location
   version                      = "12.0"
-  administrator_login          = "houssem"
-  administrator_login_password = "@Aa123456"
+  administrator_login          = var.db_admin_login
+  administrator_login_password = var.db_admin_password
 }
 
 resource "azurerm_storage_account" "storage" {
