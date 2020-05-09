@@ -1,24 +1,24 @@
 set -e
 
 export LOCATION=#{LOCATION}#
-export RESOURCE_GROUP_NAME=#{RESOURCE_GROUP_NAME}#
+export INFRA_RESOURCE_GROUP=#{INFRA_RESOURCE_GROUP}#
 export TF_STATE_STORAGE_ACCOUNT_NAME=#{TF_STATE_STORAGE_ACCOUNT_NAME}#
 export TF_STATE_CONTAINER_NAME=#{TF_STATE_CONTAINER_NAME}#
 export KEYVAULT_NAME=#{KEYVAULT_NAME}#
 
 # export LOCATION="westeurope"
-# export RESOURCE_GROUP_NAME="AppInfraRG"
+# export INFRA_RESOURCE_GROUP="AppInfraRG"
 # export TF_STATE_STORAGE_ACCOUNT_NAME="appstoragetfstate"
 # export TF_STATE_CONTAINER_NAME="appcontainertfstate"
 # export KEYVAULT_NAME="app-keyvault-ci"
  
 # Create the resource group
-az group create -n $RESOURCE_GROUP_NAME -l $LOCATION
+az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION
  
-echo "Resource group $RESOURCE_GROUP_NAME created."
+echo "Resource group $INFRA_RESOURCE_GROUP created."
  
 # Create the storage account
-az storage account create -g $RESOURCE_GROUP_NAME -l $LOCATION \
+az storage account create -g $INFRA_RESOURCE_GROUP -l $LOCATION \
   --name $TF_STATE_STORAGE_ACCOUNT_NAME \
   --sku Standard_LRS \
   --encryption-services blob
@@ -26,7 +26,7 @@ az storage account create -g $RESOURCE_GROUP_NAME -l $LOCATION \
 echo "Storage account $TF_STATE_STORAGE_ACCOUNT_NAME created."
  
 # Retrieve the storage account key
-ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
  
 echo "Storage account key retrieved."
  
@@ -36,7 +36,7 @@ az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_S
 echo "Storage container $TF_STATE_CONTAINER_NAME created."
  
 # Create an Azure KeyVault
-az keyvault create -g $RESOURCE_GROUP_NAME -l $LOCATION --name $KEYVAULT_NAME
+az keyvault create -g $INFRA_RESOURCE_GROUP -l $LOCATION --name $KEYVAULT_NAME
  
 echo "Key vault $KEYVAULT_NAME created."
  
