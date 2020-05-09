@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mvc
-  replicas: 1 # tells deployment to run 2 pods matching the template
+  replicas: 1
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: houssemdocker/webapp:1.0
+        image: acrforaks2020.azurecr.io/webapp:1.0 #houssemdocker/webapp:1.0 #
         ports:
         - containerPort: 80
         resources:

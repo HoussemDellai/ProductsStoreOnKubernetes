@@ -15,13 +15,16 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: mssql
-        image: microsoft/mssql-server-linux
-        # resources:
-        #   limits:
-        #     cpu: "2"
-        #     memory: "2Gi"
-        #   requests:
-        #     cpu: "0.5"
+      # image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+      # image: mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04
+        image: mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04
+      # image: microsoft/mssql-server-linux
+        resources:
+          limits:
+            cpu: "2"
+            memory: "3Gi"
+          requests:
+            cpu: "0.5"
         ports:
         - containerPort: 1433
         env:
@@ -35,7 +38,7 @@ spec:
       volumes:
       - name: mssql-persistent-storage
         persistentVolumeClaim:
-          claimName: mssql-pv-claim
+          claimName: mssql-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -48,5 +51,5 @@ spec:
     - protocol: TCP
       port: 1433
       targetPort: 1433
-      nodePort: 30200
+      nodePort: 30201
   type: NodePort
