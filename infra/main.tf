@@ -28,10 +28,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     vm_size    = "Standard_DS2_v2"
   }
 
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
-  }
+  # service_principal {
+  #   client_id     = var.client_id
+  #   client_secret = var.client_secret
+  # }
 
   role_based_access_control {
     enabled = false
