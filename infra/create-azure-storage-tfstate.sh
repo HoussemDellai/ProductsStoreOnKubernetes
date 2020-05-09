@@ -1,6 +1,6 @@
 set -e
  
-export LOCATION=westeurope
+export LOCATION="westeurope"
 export RESOURCE_GROUP_NAME="AppInfraRG"
 export TF_STATE_STORAGE_ACCOUNT_NAME="appstoragetfstate"
 export TF_STATE_CONTAINER_NAME="appcontainertfstate"
