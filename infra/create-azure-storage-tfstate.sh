@@ -1,10 +1,16 @@
 set -e
- 
-export LOCATION="westeurope"
+
+export LOCATION=#{$(LOCATION)}#
 export RESOURCE_GROUP_NAME="AppInfraRG"
 export TF_STATE_STORAGE_ACCOUNT_NAME="appstoragetfstate"
 export TF_STATE_CONTAINER_NAME="appcontainertfstate"
 export KEYVAULT_NAME="app-keyvault-ci"
+
+# export LOCATION="westeurope"
+# export RESOURCE_GROUP_NAME="AppInfraRG"
+# export TF_STATE_STORAGE_ACCOUNT_NAME="appstoragetfstate"
+# export TF_STATE_CONTAINER_NAME="appcontainertfstate"
+# export KEYVAULT_NAME="app-keyvault-ci"
  
 # Create the resource group
 az group create -n $RESOURCE_GROUP_NAME -l $LOCATION
