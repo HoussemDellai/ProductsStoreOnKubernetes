@@ -12,10 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app
+      IMAGE_NAME: web-app-github
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
       AKS_RESOURCE_GROUP:  resourcegroup-aks-k8s-github-2020
       AKS_NAME: aks-k8s-github-2020 
+      ACR_NAME: acrforaksgithub2020
     
     steps:
 
@@ -47,7 +48,7 @@ jobs:
       env:
         AKS_RESOURCE_GROUP: $AKS_RESOURCE_GROUP
         AKS_NAME: $AKS_NAME
-        ACR_NAME: acrforaksgithub2020
+        ACR_NAME: $ACR_NAME
         SQL_INSTANCE_NAME: sqlforaks-github-2020
         DB_ADMIN_LOGIN: houssem
         DB_ADMIN_PASSWORD: "@Aa123456"
@@ -85,6 +86,7 @@ jobs:
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
+        args: '-backend=false'
 
     - name: 'Terraform Apply'
       uses: hashicorp/terraform-github-actions@master
