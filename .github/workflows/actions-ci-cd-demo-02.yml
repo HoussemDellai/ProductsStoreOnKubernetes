@@ -69,7 +69,7 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
-        args: '-backend=false'
+        args: '-backend=local'
 
     - name: 'Terraform Validate'
       uses: hashicorp/terraform-github-actions@master
