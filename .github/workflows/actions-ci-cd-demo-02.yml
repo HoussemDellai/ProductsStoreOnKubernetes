@@ -53,7 +53,14 @@ jobs:
         DB_ADMIN_LOGIN: houssem
         DB_ADMIN_PASSWORD: "@Aa123456"
         STORAGE_NAME: storageforsqlgithub2020
-        
+    
+    - name: Find and Replace
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "azurerm"
+        replace: "local"
+        include: "infra/backend.tf"
+    
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master  
       with:
@@ -69,7 +76,7 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
-        args: '-backend=local'
+        args: '-backend=false'
 
     - name: 'Terraform Validate'
       uses: hashicorp/terraform-github-actions@master
