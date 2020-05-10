@@ -3,19 +3,19 @@ variable agent_count {
 }
 
 variable dns_prefix {
-  default = "aks-k8s-2020"
+  default = "aks-k8s-2022"
 }
 
 variable cluster_name {
-  default = "aks-k8s-2020"
+  default = "aks-k8s-2022"
 }
 
 variable acr_name {
-  default = "acrforaks2020"
+  default = "acrforaks2022"
 }
 
 variable sql_name {
-  default = "mssql-2020"
+  default = "mssql-2022"
 }
 
 variable db_name {
@@ -31,7 +31,7 @@ variable db_admin_password {
 }
 
 variable storage_name {
-  default = "mssqlstorageaccount2020"
+  default = "mssqlstorageaccount2022"
 }
 
 variable resource_group_name {
