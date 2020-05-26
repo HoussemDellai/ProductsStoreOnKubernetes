@@ -1,0 +1,77 @@
+- hosts: localhost
+  connection: local
+  vars:
+    resource_group: myResourceGroup
+    location: eastus2
+    keyvault_name: houssemkv
+    acr_name: houssemdacr
+    aks_name: myAKS
+
+  tasks:
+
+  - name: Create instance of Key Vault
+    azure_rm_keyvault:
+      resource_group: "{{ resource_group }}"
+      vault_name: "{{ keyvault_name }}"
+      location: "{{ location }}"
+      vault_tenant: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+      enabled_for_deployment: yes
+      sku:
+        name: standard
+      access_policies:
+        - tenant_id: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+          object_id: "51f76ae0-fd1d-42b4-b12e-6a9e2e3a8bd8"
+          secrets:
+            - get
+            - set
+            - list
+  # - name: Create a secret
+  #   azure_rm_keyvaultsecret:
+  #     secret_name: DatabasePassword
+  #     secret_value: My_Pass_Sec
+  #     keyvault_uri: https://houssemkv.vault.azure.net/
+  #     client_id: "9921beb6-7d53-49da-83b4-c8a6a989b05a"
+  #     tenant: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+
+  - name: Create an azure container registry
+    azure_rm_containerregistry:
+      name: "{{ acr_name }}"
+      location: "{{ location }}"
+      resource_group: "{{ resource_group }}"
+      admin_user_enabled: true
+      sku: Standard
+      tags:
+          Release: beta1
+          Environment: Production
+
+  - name: Create a managed Azure Kubernetes Service (AKS) instance
+    azure_rm_aks:
+      name: "{{ aks_name }}"
+      location: "{{ location }}"
+      resource_group: "{{ resource_group }}"
+      dns_prefix: akstest
+      kubernetes_version: 1.16.7
+      linux_profile:
+        admin_username: azureuser
+        ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBeeo7UIcJA1+qXwaSfg/9c9WuQOFVTwN7hx7xYvdH5qCBef6+oAdWQaFyfxxRb6YowSf5HNBe59iC5WPqtphEWQzlmxs1z7U1Y3IwlwxTR9GTGjmIoBfiSaOyFbKm8hVnTQrplBrF3gxL1pJBjbvlzaBW9OrIfRjCAKgsWK7ZMBatfBnkGWumnmR+jfpnDWaZ/aow8OxFZ9nNjn0KQ+jNN7IeCC4v+Ry59srww9rX9i37nkK3RoM7522ioMjvUj6Y6UHAca3YR6UvjMHHzOE9GPqYhXvWwIWjq4hXzn7mhgSuW+8Q0HO6G42Cl34AiahjiJs0Aw+I9xEDjb8N9xZqVt0vwm4oHAqC3UXVb0n9ecaUSTcXkzJx4o6Ugsi9rP4tLlrncAcre3iXtssSa2VUesaZBrbUfYNRy2/bTYTxDhfogM1Yclb2/zTfBjUrLVfKMzc5ui+5ix2NI0Ibtaa/iapRb07V8vGV/CwtgD4oCHZNvntURUI3e2nDdOq+ATlWvoPN2fuvGFM+0Y8iP+V8zMHyKK+e4u1RnLZ2kktY9EKsRFrpBT21ratXUQV1ELXKYEb7wnTrG8WtHlpI54uzFPiBUhciImF8SwWDJjO3yNpIC8tWHNz4FgpxDbEI9pDf/tPBoI/Y3OKfwX5jVnxHaOVUhUHjn6G2VkfnN/J24Q==
+      service_principal:
+        client_id: "9921beb6-7d53-49da-83b4-c8a6a989b05a"
+        client_secret: "aabf524f-a232-4b82-a630-6f35a1eaa5a8"
+      agent_pool_profiles:
+        - name: default
+          count: 1
+          vm_size: Standard_DS1_v2
+      tags:
+        Environment: Production
+
+  # - name: Remove a managed Azure Container Services (AKS) instance
+  #   azure_rm_aks:
+  #     name: "{{ aks_name }}"
+  #     resource_group: "{{ resource_group }}"
+  #     state: absent
+
+  # - name: Delete a resource group including resources it contains
+  #   azure_rm_resourcegroup:
+  #     name: "{{ resource_group }}"
+  #     force_delete_nonempty: yes
+  #     state: absent
