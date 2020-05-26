@@ -2,7 +2,7 @@ name: Build & Deploy to AKS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
   pull_request:
     branches: [ dev ]
 

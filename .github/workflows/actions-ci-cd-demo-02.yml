@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app
+      IMAGE_NAME: web-app-github
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+      AKS_RESOURCE_GROUP:  resourcegroup-aks-k8s-github-2020
+      AKS_NAME: aks-k8s-github-2020 
+      ACR_NAME: acrforaksgithub2020
     
     steps:
 
@@ -36,13 +39,35 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1.0
+      with:
+        tokenPrefix: __
+        tokenSuffix: __
+        files: terraform.tfvars
+      env:
+        AKS_RESOURCE_GROUP: $AKS_RESOURCE_GROUP
+        AKS_NAME: $AKS_NAME
+        ACR_NAME: $ACR_NAME
+        SQL_INSTANCE_NAME: sqlforaks-github-2020
+        DB_ADMIN_LOGIN: houssem
+        DB_ADMIN_PASSWORD: "@Aa123456"
+        STORAGE_NAME: storageforsqlgithub2020
+    
+    - name: Find and Replace
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "azurerm"
+        replace: "local"
+        include: "infra/backend.tf"
+    
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master  
       with:
-         tf_actions_version: 0.12.13
-         tf_actions_subcommand: 'fmt'
-         tf_actions_working_dir: './infra'
-         tf_actions_comment: false
+        tf_actions_version: 0.12.13
+        tf_actions_subcommand: 'fmt'
+        tf_actions_working_dir: './infra'
+        tf_actions_comment: false
        
     - name: 'Terraform Init'
       uses: hashicorp/terraform-github-actions@master
@@ -51,7 +76,6 @@ jobs:
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
-        args: '-backend=false'
 
     - name: 'Terraform Validate'
       uses: hashicorp/terraform-github-actions@master
@@ -81,8 +105,8 @@ jobs:
     - uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: aks-k8s
-        resource-group: aks-k8s
+        cluster-name: $AKS_NAME
+        resource-group: $AKS_RESOURCE_GROUP
         
     - uses: Azure/k8s-deploy@v1
       with:
