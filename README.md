@@ -71,18 +71,24 @@ $ docker-compose up
   Starting mvcapp-k8s    ... done  
 	
 ### 4) Push containers to Docker Hub  
+
+Now that we have created the docker image in our machine, we want to deploy it into Kubernetes. But, Kubernetes should get that image through a Container Registry. Container Registry is a like a database for all our containers. We can use Azure ACR or Docker Hub... We'll continue with Docker Hub. Make sure you create a an account here <a href="https://hub.docker.com/">hub.docker.com</a> and take note of your Docker Hub ID (Registry name).  
+
+4.1) Create a variable to hold our Registry name  
+$ $registry="REPLACE_WITH_YOUR_DOCKER_HUB_ID"  
+4.2) Tag the image by appending the registry name  
+$ docker tag mvc-app:1.0 $registry/mvc-app:1.0  
+4.3) Login to Docker Hub and enter your login and password    
+$ docker login  
+4.4) Push the image into the registry  
+$ docker push $registry/mvc-app:1.0  
+4.5) Check your hub.docker.io, you should see the image uploaded into a repository
+
+### 5) Deploy to Minikube/Kubernetes using the Dashboard  
 	
-4.1) Tag image, login, push  
-4.2) $ docker tag mvc-app:1.0 houssemdocker/mvc-app:1.0  # use your own Docker Hub ID  
-4.3) $ docker login  
-4.4) $ docker push houssemdocker/mvc-app:1.0  
-     Check your hub.docker.io
-	
-### 5) Deploy to Kubernetes using the Dashboard  
-	
-    5.1) Start the Dashboard  
-	5.2) $ minikube start  
-	5.3) $ minikube dashboard  
+5.1) Start the Dashboard  
+5.2) $ minikube start  
+5.3) $ minikube dashboard  
 	
 ### 6) Deploy to Kubernetes using Kubectl CLI  
 	
