@@ -90,54 +90,63 @@ $ docker push $registry/mvc-app:1.0
 
 ### 5) Deploy to Minikube/Kubernetes using the Dashboard  
 	
+```console
 5.1) Start the Dashboard  
 5.2) $ minikube start  
 5.3) $ minikube dashboard  
-	
+```
+
 ### 6) Deploy to Kubernetes using Kubectl CLI  
 	
-    6.1) $ Kubectl run …  
-	6.2) $ kubectl get deployments  
-	6.3) $ kubectl get secrets  
-	6.4) $ kubectl get services  
+```console
+6.1) $ Kubectl run …  
+6.2) $ kubectl get deployments  
+6.3) $ kubectl get secrets  
+6.4) $ kubectl get services  
+```
 	
 ### 7) Deploy to Kubernetes using configuration YAML files  
 
-	7.1) $ kubectl apply -f mssql-secret.yaml  
-	     $ kubectl get secrets   
-	7.2) $ kubectl apply -f mssql-pv.local.yaml  
-	     $ kubectl get pv  
-	7.3) $ kubectl apply -f mssql-deployment.yaml  
-	     $ kubectl get deployments  
-	7.4  $ kubectl apply -f mvc-deployment.local.yaml  
-	     $ kubectl get deployments  
-	7.5) $ minikube config set memory 4096  # if we need to resize minikube  
-	8.0) $ kubectl delete services,deployments,pvc,secrets --all -n default
-	
+```console
+7.1) $ kubectl apply -f mssql-secret.yaml  
+     $ kubectl get secrets   
+7.2) $ kubectl apply -f mssql-pv.local.yaml  
+     $ kubectl get pv  
+7.3) $ kubectl apply -f mssql-deployment.yaml  
+     $ kubectl get deployments  
+7.4  $ kubectl apply -f mvc-deployment.local.yaml  
+     $ kubectl get deployments  
+7.5) $ minikube config set memory 4096  # if we need to resize minikube  
+7.6) $ kubectl delete services,deployments,pvc,secrets --all -n default
+```
+
 ### 8) Create managed Kubernetes cluster in Azure using AKS  
 
-	8.1) $ az group create \  
-			  --location westeurope \  
-			  --subscription "Microsoft Azure Sponsorship" \  
-			  --name aks-k8s-rg  
-	8.2) $ az aks create \  
-			  --generate-ssh-keys \  
-			  --subscription "Microsoft Azure Sponsorship" \  
-			  --node-count 1 \  
-			  --resource-group aks-k8s-rg \  
-			  --name aks-k8s   
-	8.3) $ az aks get-credentials \  
-			  --resource-group aks-k8s-rg \  
-			  --name aks-k8s \  
-			  --subscription "Microsoft Azure Sponsorship" 
-		 Merged "aks-k8s" as current context in /Users/houssem/.kube/config  
-	8.4) $ kubectl create clusterrolebinding kubernetes-dashboard \      			   --clusterrole=cluster-admin \  
-	               --serviceaccount=kube-system:kubernetes-dashboard  
-	8.5) $ az aks browse \
-			  --resource-group aks-k8s-rg \
-			  --name aks-k8s \
-			  --subscription "Microsoft Azure Sponsorship"  
-	
+```console
+8.1) $ az group create \  
+		  --location westeurope \  
+		  --subscription "Microsoft Azure Sponsorship" \  
+		  --name aks-k8s-rg  
+8.2) $ az aks create \  
+		  --generate-ssh-keys \  
+		  --subscription "Microsoft Azure Sponsorship" \  
+		  --node-count 1 \  
+		  --resource-group aks-k8s-rg \  
+		  --name aks-k8s   
+8.3) $ az aks get-credentials \  
+		  --resource-group aks-k8s-rg \  
+		  --name aks-k8s \  
+		  --subscription "Microsoft Azure Sponsorship" 
+	 Merged "aks-k8s" as current context in /Users/houssem/.kube/config  
+8.4) $ kubectl create clusterrolebinding kubernetes-dashboard \  
+               --clusterrole=cluster-admin \  
+               --serviceaccount=kube-system:kubernetes-dashboard  
+8.5) $ az aks browse \
+		  --resource-group aks-k8s-rg \
+		  --name aks-k8s \
+		  --subscription "Microsoft Azure Sponsorship"  
+```
+
 ### 9) Create the CI/CD pipelines for using Azure DevOps   
 
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/ci-cd-aks.png?raw=true"/>
