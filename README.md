@@ -45,8 +45,7 @@ Make sure you have Docker installed and running in your machine: <a href="https:
 ```console  
 $ docker run hello-world  
   Hello from Docker!  
-  This message shows that your installation appears to be working correctly.  
-```console  
+  This message shows that your installation appears to be working correctly.    
 2.2) Create Docker image  
 $ cd MvcApp  
 $ docker build .     # don't forget the dot at the end to configure thecontext!  
@@ -60,22 +59,24 @@ $ docker ps
 2.6) Open browser on localhost:5555 and note how the app doesn't connect to database despite it is configured to!!  
 2.7) Configure and start SQL Server on container  
 $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
+```
 
 ### 3) Run the App using docker-compose
 
-When dealing with multiple containers, Docker Compose becomes really useful. It allows to define the configuration in a single file. This file then will be used to build, deploy and stop all the images using docker-compose CLI.  
-3.0) Open the **docker-compose.yaml** file. Note how we are defining 2 services: one to run the web app and a second one to deploy the database.  
+When dealing with multiple containers, Docker Compose becomes really useful. It allows to define the configuration in a single file. This file then will be used to build, deploy and stop all the images using docker-compose CLI. Open the **docker-compose.yaml** file. Note how we are defining 2 services: one to run the web app and a second one to deploy the database.  
+```console
 3.1) Build the Docker Compose file to create the images  
 $ docker-compose build  
 3.2) Run the Docker Compose file to run the created images  
 $ docker-compose up  
   Starting sqldb-k8s     ... done  
   Starting mvcapp-k8s    ... done  
-	
+```
+
 ### 4) Push containers to Docker Hub  
 
 Now that we have created the docker image in our machine, we want to deploy it into Kubernetes. But, Kubernetes should get that image through a Container Registry. Container Registry is a like a database for all our containers. We can use Azure ACR or Docker Hub... We'll continue with Docker Hub. Make sure you create a an account here <a href="https://hub.docker.com/">hub.docker.com</a> and take note of your Docker Hub ID (Registry name).  
-
+```console
 4.1) Create a variable to hold our Registry name  
 $ $registry="REPLACE_WITH_YOUR_DOCKER_HUB_ID"  
 4.2) Tag the image by appending the registry name  
@@ -85,6 +86,7 @@ $ docker login
 4.4) Push the image into the registry  
 $ docker push $registry/mvc-app:1.0  
 4.5) Check your hub.docker.io, you should see the image uploaded into a repository
+```
 
 ### 5) Deploy to Minikube/Kubernetes using the Dashboard  
 	
