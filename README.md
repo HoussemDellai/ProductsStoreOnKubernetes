@@ -34,17 +34,18 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-objects.png?raw=true" width="80%"/>
 </a>
 	
-### 2) Create docker containers  
+### 2) Create docker container  
 
-    2.0) Install Docker into your machine
-	 Make sure you have Docker installed and running in your machine: https://www.docker.com/products/docker-desktop 
+2.0) Install Docker into your machine
+Make sure you have Docker installed and running in your machine: a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a>
 	
-    2.1) Introduction to Dockerfile: build, run  
+2.1) Start Docker in your machine and check if it runs successfully by deploying a sample image called hello-world:
          $ docker run hello-world  
            Hello from Docker!  
            This message shows that your installation appears to be working correctly.  
-         $ cd MvcApp  
-	2.2) $ docker build .     # don't forget the dot at the end to configure the context!  
+2.2) 
+	 $ cd MvcApp 
+	 $ docker build .     # don't forget the dot at the end to configure the context!  
          $ docker build --rm -f "Dockerfile" -t mvc-app:1.0 .   
 	2.3) $ docker images  
 	2.4) $ docker run --rm -d -p 5555:80/tcp mvc-app:1.0   
