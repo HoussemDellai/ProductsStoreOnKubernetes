@@ -110,11 +110,11 @@ $ docker push $registry/mvc-app:1.0
 ```console
 7.1) $ kubectl apply -f mssql-secret.yaml  
      $ kubectl get secrets   
-7.2) $ kubectl apply -f mssql-pv.local.yaml  
+7.2) $ kubectl apply -f mssql-pv.azure.yaml  
      $ kubectl get pv  
 7.3) $ kubectl apply -f mssql-deployment.yaml  
      $ kubectl get deployments  
-7.4  $ kubectl apply -f mvc-deployment.local.yaml  
+7.4  $ kubectl apply -f mvc-deployment.azure.yaml  
      $ kubectl get deployments  
 7.5) $ minikube config set memory 4096  # if we need to resize minikube  
 7.6) $ kubectl delete services,deployments,pvc,secrets --all -n default
