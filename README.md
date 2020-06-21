@@ -36,6 +36,8 @@ Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/
 	
 ### 2) Create docker container  
 
+Inside the MvcApp folder, we have a sample ASP.NET Core MVC application that displays web pages and connects to a Database. The goal here is to run this application in a Docker container. For that, we need the **Dockerfile** which describes the instructions to build/compile app from source code and deploy it into a base image that have .NET Core SDK and Runtime.  
+
 2.0) Install Docker into your machine
 Make sure you have Docker installed and running in your machine: <a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a>
 	
@@ -43,32 +45,38 @@ Make sure you have Docker installed and running in your machine: <a href="https:
 $ docker run hello-world  
   Hello from Docker!  
   This message shows that your installation appears to be working correctly.  
-2.2) 
-	 $ cd MvcApp 
-	 $ docker build .     # don't forget the dot at the end to configure the context!  
-         $ docker build --rm -f "Dockerfile" -t mvc-app:1.0 .   
-	2.3) $ docker images  
-	2.4) $ docker run --rm -d -p 5555:80/tcp mvc-app:1.0   
-	2.5) $ docker ps  
-	2.6) Open browser on localhost:5555 (app doesn't connect to database!!)  
-	2.7) Configure and start SQL Server on container  
-	2.8) $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
+2.2) Create Docker image  
+$ cd MvcApp  
+$ docker build .     # don't forget the dot at the end to configure thecontext!  
+$ docker build --rm -f "Dockerfile" -t mvc-app:1.0 .   
+2.3) List the created image  
+$ docker images  
+2.4) Run the created image  
+$ docker run --rm -d -p 5555:80/tcp mvc-app:1.0   
+2.5) List the running image  
+$ docker ps  
+2.6) Open browser on localhost:5555 and note how the app doesn't connect to database despite it is configured to!!  
+2.7) Configure and start SQL Server on container  
+$ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
 
 ### 3) Run the App using docker-compose
 
-	3.0) Open the docker-compose.yaml file
-	3.1) $ docker-compose build
-	3.2) $ docker-compose up
-		 Starting sqldb-k8s     ... done
-		 Starting mvcapp-k8s    ... done
+When dealing with multiple containers, Docker Compose becomes really useful. It allows to define the configuration in a single file. This file then will be used to build, deploy and stop all the images using docker-compose CLI.  
+3.0) Open the **docker-compose.yaml** file. Note how we are defining 2 services: one to run the web app and a second one to deploy the database.  
+3.1) Build the Docker Compose file to create the images
+$ docker-compose build
+3.2) Run the Docker Compose file to run the created images
+$ docker-compose up
+  Starting sqldb-k8s     ... done
+  Starting mvcapp-k8s    ... done
 	
 ### 4) Push containers to Docker Hub  
 	
-    4.1) Tag image, login, push  
-	4.2) $ docker tag mvc-app:1.0 houssemdocker/mvc-app:1.0  # use your own Docker Hub ID  
-	4.3) $ docker login  
-	4.4) $ docker push houssemdocker/mvc-app:1.0  
-         Check your hub.docker.io
+4.1) Tag image, login, push  
+4.2) $ docker tag mvc-app:1.0 houssemdocker/mvc-app:1.0  # use your own Docker Hub ID  
+4.3) $ docker login  
+4.4) $ docker push houssemdocker/mvc-app:1.0  
+     Check your hub.docker.io
 	
 ### 5) Deploy to Kubernetes using the Dashboard  
 	
@@ -76,14 +84,14 @@ $ docker run hello-world
 	5.2) $ minikube start  
 	5.3) $ minikube dashboard  
 	
-### 6) Deploy to Kubernetes using kubectl cli  
+### 6) Deploy to Kubernetes using Kubectl CLI  
 	
     6.1) $ Kubectl run …  
 	6.2) $ kubectl get deployments  
 	6.3) $ kubectl get secrets  
 	6.4) $ kubectl get services  
 	
-### 7) Deploy to kubernetes using configuration YAML files  
+### 7) Deploy to Kubernetes using configuration YAML files  
 
 	7.1) $ kubectl apply -f mssql-secret.yaml  
 	     $ kubectl get secrets   
