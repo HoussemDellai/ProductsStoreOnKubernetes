@@ -42,9 +42,11 @@ Inside the MvcApp folder, we have a sample ASP.NET Core MVC application that dis
 Make sure you have Docker installed and running in your machine: <a href="https://www.docker.com/products/docker-desktop">Docker Desktop</a>
 	
 2.1) Start Docker in your machine and check if it runs successfully by deploying a sample image called hello-world:  
+```console  
 $ docker run hello-world  
   Hello from Docker!  
   This message shows that your installation appears to be working correctly.  
+```console  
 2.2) Create Docker image  
 $ cd MvcApp  
 $ docker build .     # don't forget the dot at the end to configure thecontext!  
