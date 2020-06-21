@@ -22,19 +22,22 @@ The k8s objects defined in YAML files are used to deploy the app into a Kubernet
 Source: https://blog.nebrass.fr/playing-with-spring-boot-on-kubernetes/  
 
 
-	1.2) Learn more about Kubernetes architecture:
-
-<a href="https://www.youtube.com/watch?v=HJ6F05Pm5mQ">
-<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-objects.png?raw=true" width="80%"/>
-</a>
-
-	1.3) Learn more about Kubernetes objects (Deployment I Service I ConfigMap I Secret I PersistentVolume)
+    1.2) Learn more about Kubernetes architecture:
 
 <a href="https://www.youtube.com/watch?v=pR-UlYf61uA">
 <img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-explained.png?raw=true" width="80%"/>
 </a>
+
+    1.3) Learn more about Kubernetes objects: Deployment, Service, ConfigMap, Secret, PersistentVolume...
+
+<a href="https://www.youtube.com/watch?v=HJ6F05Pm5mQ">
+<img src="https://github.com/HoussemDellai/ProductsStoreOnKubernetes/blob/master/images/k8s-objects.png?raw=true" width="80%"/>
+</a>
 	
 ### 2) Create docker containers  
+
+    2.0) Install Docker into your machine
+	 Make sure you have Docker installed and running in your machine: https://www.docker.com/products/docker-desktop 
 	
     2.1) Introduction to Dockerfile: build, run  
          $ docker run hello-world  
