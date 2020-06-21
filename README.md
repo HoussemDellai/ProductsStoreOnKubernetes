@@ -63,12 +63,12 @@ $ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d micro
 
 When dealing with multiple containers, Docker Compose becomes really useful. It allows to define the configuration in a single file. This file then will be used to build, deploy and stop all the images using docker-compose CLI.  
 3.0) Open the **docker-compose.yaml** file. Note how we are defining 2 services: one to run the web app and a second one to deploy the database.  
-3.1) Build the Docker Compose file to create the images
-$ docker-compose build
-3.2) Run the Docker Compose file to run the created images
-$ docker-compose up
-  Starting sqldb-k8s     ... done
-  Starting mvcapp-k8s    ... done
+3.1) Build the Docker Compose file to create the images  
+$ docker-compose build  
+3.2) Run the Docker Compose file to run the created images  
+$ docker-compose up  
+  Starting sqldb-k8s     ... done  
+  Starting mvcapp-k8s    ... done  
 	
 ### 4) Push containers to Docker Hub  
 	
