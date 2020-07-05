@@ -26,19 +26,19 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'houssemdocker'
+        repository: 'products-web'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: 'products-web:$(tag)'
+        tags: '$(tag)'
 
     - task: Docker@2
       displayName: Push an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'houssemdocker'
+        repository: 'products-web'
         command: 'push'
         Dockerfile: '**/Dockerfile'
-        tags: 'products-web:$(tag)'
+        tags: '$(tag)'
 
 - stage: Deploy
   displayName: Deploy Helm
