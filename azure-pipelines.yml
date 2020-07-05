@@ -1,0 +1,71 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+# trigger:
+# - master
+  
+pr:
+  branches:
+    include:
+      - dev
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'DockerHubConnnection'
+        repository: 'helmdemo'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'
+
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        containerRegistry: 'DockerHubConnnection'
+        repository: 'helmdemo'
+        command: 'push'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'
+
+- stage: Deploy
+  displayName: Deploy Helm
+  jobs:  
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+      
+    steps:
+
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: '3.2.3'
+
+    - task: HelmDeploy@0
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscription: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+        azureResourceGroup: 'aks-demo'
+        kubernetesCluster: 'aks-demo'
+        command: 'upgrade'
+        chartType: 'FilePath'
+        chartPath: 'charts/productsstore'
+        releaseName: 'productsstore'
+        arguments: '--install'
