@@ -26,7 +26,7 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'products-web'
+        repository: 'houssemdocker/products-web'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
@@ -35,7 +35,7 @@ stages:
       displayName: Push an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'products-web'
+        repository: 'houssemdocker/products-web'
         command: 'push'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
