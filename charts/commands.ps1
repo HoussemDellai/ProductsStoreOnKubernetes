@@ -24,7 +24,13 @@ helm install -f values.yaml --set image.tag="1.19.0" my-app firstchart
 helm list
 
 # Upgrade a chart
-helm upgrade --install my-app firstchart
+helm upgrade --install --set service.type=LoadBalancer my-app firstchart
 
 # Delete a Helm chart
 helm uninstall my-app
+
+# Add Helm repository
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Install a chart from a repository
+helm install my-release bitnami/jenkins
