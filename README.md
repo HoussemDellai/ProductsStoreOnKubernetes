@@ -58,7 +58,7 @@ $ docker run --rm -d -p 5555:80/tcp mvc-app:1.0
 $ docker ps  
 2.6) Open browser on localhost:5555 and note how the app doesn't connect to database despite it is configured to!!  
 2.7) Configure and start SQL Server on container  
-$ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d microsoft/mssql-server-linux:2017-CU8  
+$ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=@Aa123456' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04  
 ```
 
 ### 3) Run the App using docker-compose
