@@ -30,16 +30,16 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'helmdemo'
+        repository: 'houssemdocker'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
 
     - task: Docker@2
-      displayName: Build an image
+      displayName: Push an image
       inputs:
         containerRegistry: 'DockerHubConnnection'
-        repository: 'helmdemo'
+        repository: 'houssemdocker'
         command: 'push'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
