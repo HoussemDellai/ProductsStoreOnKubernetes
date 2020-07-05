@@ -4,6 +4,9 @@ metadata:
   name: mssql-deployment-helm
   namespace: {{ .Values.namespace }}
 spec:
+  selector:
+    matchLabels:
+      app: mssql
   replicas: {{ .Values.sql.image.replicaCount }}
   template:
     metadata:
