@@ -29,7 +29,7 @@ stages:
         repository: 'houssemdocker'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+        tags: 'products-web:$(tag)'
 
     - task: Docker@2
       displayName: Push an image
@@ -38,7 +38,7 @@ stages:
         repository: 'houssemdocker'
         command: 'push'
         Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+        tags: 'products-web:$(tag)'
 
 - stage: Deploy
   displayName: Deploy Helm
@@ -64,4 +64,4 @@ stages:
         chartType: 'FilePath'
         chartPath: 'charts/productsstore'
         releaseName: 'productsstore'
-        arguments: '--install'
+        arguments: '--install --set web.image.tag=:$(tag) --set --set web.image.name=products-web'
