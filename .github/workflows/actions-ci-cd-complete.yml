@@ -28,14 +28,14 @@ jobs:
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.11.1
+        azcliversion: 2.11.x
         inlineScript: |
           az account list -o table
           az storage -h
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.11.1
+        azcliversion: 2.11.x
         inlineScript: |
           chmod +x $GITHUB_WORKSPACE/infra/create-azure-storage-tfstate.sh
           $GITHUB_WORKSPACE/infra/create-azure-storage-tfstate.sh
