@@ -25,7 +25,7 @@ jobs:
       with:
         tokenPrefix: __
         tokenSuffix: __
-        files: terraform.tfvars
+        files: $GITHUB_WORKSPACE/infra/create-azure-storage-tfstate.sh
       env:
         LOCATION: "westeurope"
         INFRA_RESOURCE_GROUP: "tf-state-resourcegroup"
