@@ -72,16 +72,17 @@ jobs:
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: $TF_VERSION
-        working-directory: infra/
     
     - name: Terraform fmt
       id: fmt
       run: terraform fmt
+      working-directory: infra
       continue-on-error: true
     
     - name: Terraform Init
       id: init
       run: terraform init
+      working-directory: infra/
     
     - name: Terraform Validate
       id: validate
