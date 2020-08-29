@@ -56,6 +56,9 @@ jobs:
           echo "The ACCOUNT_KEY is $ACCOUNT_KEY"
           echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
           echo 'The TF_STATE_ACCESS_KEY is ' $TF_STATE_ACCESS_KEY
+          
+    - name: echo $TF_STATE_ACCESS_KEY
+      run: echo 'The TF_STATE_ACCESS_KEY is ' $TF_STATE_ACCESS_KEY
 
 
     ######################################
