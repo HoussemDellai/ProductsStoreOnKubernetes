@@ -52,7 +52,7 @@ jobs:
           # Create a storage container (for the Terraform State)
           az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
-          echo '::set-env name=TF_STATE_ACCESS_KEY::ACCOUNT_KEY'
+          echo '::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY'
           echo 'The KEY is' $TF_STATE_ACCESS_KEY
 
 
