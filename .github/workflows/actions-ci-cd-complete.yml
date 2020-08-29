@@ -20,6 +20,18 @@ jobs:
     - uses: actions/checkout@v2
 
     ########################
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1.0
+      with:
+        tokenPrefix: __
+        tokenSuffix: __
+        files: terraform.tfvars
+      env:
+        LOCATION="westeurope"
+        INFRA_RESOURCE_GROUP="tf-state-resourcegroup"
+        TF_STATE_STORAGE_ACCOUNT_NAME="tfstatestorage"
+        TF_STATE_CONTAINER_NAME="tfstate"
+        
     - name: Azure Login
       uses: azure/login@v1
       with:
