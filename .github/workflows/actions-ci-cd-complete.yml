@@ -31,6 +31,11 @@ jobs:
         INFRA_RESOURCE_GROUP: "tf-state-resourcegroup"
         TF_STATE_STORAGE_ACCOUNT_NAME: "tfstatestorage"
         TF_STATE_CONTAINER_NAME: "tfstate"
+      
+    - name: cat PS file
+      run:
+        cat $GITHUB_WORKSPACE/infra/create-azure-storage-tfstate.sh
+    
         
     - name: Azure Login
       uses: azure/login@v1
