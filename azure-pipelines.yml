@@ -64,4 +64,4 @@ stages:
         chartType: 'FilePath'
         chartPath: 'charts/productsstore'
         releaseName: 'productsstore'
-        arguments: '--set web.image.tag=:$(tag) --set web.image.name=products-web'
+        arguments: '--set web.image.tag=$(tag) --set web.image.name=products-web --set namespace=helm-app'
