@@ -19,6 +19,7 @@ jobs:
       IMAGE_NAME: web-app
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
       TF_VERSION: 0.13.1
+      TF_STATE_ACCESS_KEY: "" # will be set later
     
     steps:
 
@@ -27,35 +28,6 @@ jobs:
     
     
     
-    ######################################
-
-    - uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 0.13.1
-    
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt
-      working-directory: infra
-      continue-on-error: true
-    
-    - name: Terraform Init
-      id: init
-      run: terraform init
-      working-directory: infra/
-    
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-    
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
-    
-
-######################################
-
     ########################
 
     - name: Azure Login
@@ -77,9 +49,51 @@ jobs:
             --sku Standard_LRS \
             --encryption-services blob
           # Retrieve the storage account key
-          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+          TF_STATE_ACCESS_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
           # Create a storage container (for the Terraform State)
-          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $TF_STATE_ACCESS_KEY
+
+
+
+    ######################################
+
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 0.13.1
+    
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt
+      working-directory: infra
+      continue-on-error: true
+    
+    
+    - name: echo $TF_STATE_ACCESS_KEY
+      run: echo $TF_STATE_ACCESS_KEY
+    
+    - name: Terraform Init
+      id: init
+      run: terraform init
+             -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
+             -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
+             -backend-config="access_key=$TF_STATE_ACCESS_KEY"
+             -backend-config="key=tfstate"
+      working-directory: infra/
+    
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      working-directory: infra
+    
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      working-directory: infra
+      continue-on-error: true
+    
+
+######################################
+
 
     #########################      
     - name: Build Docker Image
