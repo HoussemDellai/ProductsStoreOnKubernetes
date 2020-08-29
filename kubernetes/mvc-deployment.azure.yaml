@@ -1,4 +1,4 @@
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mvc-deployment
@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: mvc
-  replicas: 10
+  replicas: 3
   template:
     metadata:
       labels:
@@ -14,17 +14,18 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: houssemdocker/mvc-app:1.0 
+        image: acrinseec.azurecr.io/inseecapp:1.0
+        # image: houssemdocker/mvc-app:1.0 
         # image: __ACR_NAME__.azurecr.io/webapp:1.__Build.BuildId__
         ports:
         - containerPort: 80
         resources:
           limits:
-            cpu: "1"
-            memory: "200Mi"
-          requests:
-            cpu: "0.1"
+            cpu: 300m
             memory: "100Mi"
+          requests:
+            cpu: 100m
+            memory: "50Mi"
         env:
           - name: ConnectionStrings__ProductsContext
             valueFrom:
