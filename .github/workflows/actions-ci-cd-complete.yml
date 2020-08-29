@@ -18,7 +18,6 @@ jobs:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
-      TF_VERSION: 0.13.1
       TF_STATE_ACCESS_KEY: "" # will be set later
     
     steps:
@@ -49,10 +48,12 @@ jobs:
             --sku Standard_LRS \
             --encryption-services blob
           # Retrieve the storage account key
-          TF_STATE_ACCESS_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
+          ACCOUNT_KEY=$(az storage account keys list --resource-group $INFRA_RESOURCE_GROUP --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --query [0].value -o tsv)
           # Create a storage container (for the Terraform State)
-          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $TF_STATE_ACCESS_KEY
+          az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
+          echo '::set-env name=TF_STATE_ACCESS_KEY::ACCOUNT_KEY'
+          echo 'The KEY is' $TF_STATE_ACCESS_KEY
 
 
     ######################################
