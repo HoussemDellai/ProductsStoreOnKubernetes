@@ -23,6 +23,38 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+    
+    
+    
+    
+    ######################################
+
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 0.13.1
+    
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt
+      working-directory: infra
+      continue-on-error: true
+    
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: infra/
+    
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
+    
+
+######################################
 
     ########################
 
@@ -67,34 +99,9 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
-######################################
 
-    - uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: $TF_VERSION
-    
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt
-      working-directory: infra
-      continue-on-error: true
-    
-    - name: Terraform Init
-      id: init
-      run: terraform init
-      working-directory: infra/
-    
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-    
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
-    
 
-######################################
+
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master  
       with:
