@@ -70,6 +70,9 @@ jobs:
 ######################################
 
     - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: $TF_VERSION
+        working-directory: infra/
     
     - name: Terraform fmt
       id: fmt
