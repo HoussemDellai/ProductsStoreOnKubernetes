@@ -19,6 +19,11 @@ jobs:
       IMAGE_NAME: web-app
       IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
       TF_STATE_ACCESS_KEY: "" # will be set later
+      
+      ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: "4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3"
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     
     steps:
 
