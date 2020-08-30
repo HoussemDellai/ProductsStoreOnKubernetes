@@ -62,6 +62,13 @@ jobs:
 
 
     ######################################
+    - name: Login to Azure as User
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.10.1
+        inlineScript: |
+          az login -u "houssem.dellai@microsoft.com" -p "@mhd04061989!"
+          az account list -o table
 
     - uses: hashicorp/setup-terraform@v1
       with:
