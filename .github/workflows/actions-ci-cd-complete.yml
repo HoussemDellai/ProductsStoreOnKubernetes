@@ -67,7 +67,7 @@ jobs:
       with:
         azcliversion: 2.10.1
         inlineScript: |
-          az login -u "houssem.dellai@microsoft.com" -p "@mhd04061989!"
+          az login -u 
           az account list -o table
 
     - uses: hashicorp/setup-terraform@v1
