@@ -66,6 +66,25 @@ jobs:
       run: echo 'The TF_STATE_ACCESS_KEY is ' $TF_STATE_ACCESS_KEY
 
 
+############################################
+
+    - name: String Replace
+      # You may pin to the exact commit or the version.
+      # uses: bejoistic/str-replace@efbbb67d349eaf509144d4ce1202ed0c6fb3e340
+      uses: bejoistic/str-replace@v1.0.2
+      with:
+        # A regular expression of files to include in our find and replace
+        include: infra/terraform.tfvars
+        # A regular expression of files to exclude in our find and replace
+        # exclude: # optional, default is .git
+        # The string we want to replace
+        find: __AKS_RESOURCE_GROUP__
+        # The new string to replace with
+        replace: aks-rg
+
+    - name: cat infra/terraform.tfvars
+      run: cat infra/terraform.tfvars
+      
     ######################################
     - name: Login to Azure as User
       uses: azure/CLI@v1
