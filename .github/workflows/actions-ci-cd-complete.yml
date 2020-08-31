@@ -56,14 +56,14 @@ jobs:
 
           echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
 
-  infra:
-    name: Create Infra with Terraform
-    runs-on: ubuntu-latest
-    needs: [pre-build]
-
-    steps:
-
-    - uses: actions/checkout@v2
+#  infra:
+#    name: Create Infra with Terraform
+#    runs-on: ubuntu-latest
+#    needs: [pre-build]
+#
+#    steps:
+#
+#    - uses: actions/checkout@v2
       
     - name: Login to Azure as User
       uses: azure/CLI@v1
@@ -114,14 +114,14 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: infra
 
-  build:
-    name: Build & Push Docker container
-    runs-on: ubuntu-latest
-    needs: [infra]
-        
-    steps:
-
-    - uses: actions/checkout@v2
+#  build:
+#    name: Build & Push Docker container
+#    runs-on: ubuntu-latest
+#    needs: [infra]
+#        
+#    steps:
+#
+#    - uses: actions/checkout@v2
           
     - name: Build Docker Image
       run:
@@ -140,14 +140,14 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
-  deploy:
-    name: Deploy app into Kubernetes
-    runs-on: ubuntu-latest
-    needs: [build, infra]
-
-    steps:
-
-    - uses: actions/checkout@v2
+#  deploy:
+#    name: Deploy app into Kubernetes
+#    runs-on: ubuntu-latest
+#    needs: [build, infra]
+#
+#    steps:
+#
+#    - uses: actions/checkout@v2
       
     - name: Replace Action
       uses: datamonsters/replace-action@v2
