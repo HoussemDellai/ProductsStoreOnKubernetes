@@ -14,7 +14,7 @@ env:
   TF_STATE_ACCESS_KEY: "" # will be set later
     
   DOCKER_REPOSITORY: houssemdocker
-  IMAGE_NAME: web-app
+  IMAGE_NAME: webapp
   IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
   
   ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
@@ -152,8 +152,9 @@ jobs:
     - name: Replace Action
       uses: datamonsters/replace-action@v2
       with:
-        files: ubernetes/mvc-deployment.azure.yaml
-        replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
+        files: kubernetes/mvc-deployment.azure.yaml
+        replacements: 'ACR_NAME=houssemdocker,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
+        # replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
 
     - uses: Azure/aks-set-context@v1
       with:
