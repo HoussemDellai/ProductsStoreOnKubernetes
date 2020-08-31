@@ -24,10 +24,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: "4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3"
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      
-      AKS_NAME: aks-k8s
-      AKS_RESOURCE_GROUP: aks-rg
-    
+
     steps:
 
     - uses: actions/checkout@v2
@@ -141,15 +138,7 @@ jobs:
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
-          kubernetes/mssql-pv.azure.yaml
-          kubernetes/mssql-secret.yaml
-          kubernetes/mssql-deployment.yaml
-          kubernetes/mvc-deployment.azure.yaml
-          kubernetes/mssql-configmap.yaml
-       # images: |
-       #   demo.azurecr.io/k8sdemo:${{ github.sha }}
-       # imagepullsecrets: |
-       #   demo-k8s-secret
+          kubernetes
      
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
