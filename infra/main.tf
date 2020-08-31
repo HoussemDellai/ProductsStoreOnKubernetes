@@ -1,14 +1,14 @@
-provider "azurerm" {
-  version = ">=2.0"
-  # The "feature" block is required for AzureRM provider 2.x.
-  features {}
-  # Get the following credentials by running the command:
-  # $ az ad sp create-for-rbac --sdk-auth
-  # subscription_id = var.subscription_id
-  # client_id       = var.client_id
-  # client_secret   = var.client_secret
-  # tenant_id       = var.tenant_id
-}
+// provider "azurerm" {
+//   version = ">=2.0"
+//   # The "feature" block is required for AzureRM provider 2.x.
+//   features {}
+//   # Get the following credentials by running the command:
+//   # $ az ad sp create-for-rbac --sdk-auth
+//   # subscription_id = var.subscription_id
+//   # client_id       = var.client_id
+//   # client_secret   = var.client_secret
+//   # tenant_id       = var.tenant_id
+// }
 
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
@@ -20,7 +20,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = var.dns_prefix
-  kubernetes_version  = "1.17.3"
+  kubernetes_version  = "1.17.9"
 
   default_node_pool {
     name       = "default"
