@@ -137,7 +137,12 @@ jobs:
 
     - uses: Azure/k8s-deploy@v1
       with:
-        manifests: kubernetes
+        manifests: |
+          kubernetes/mssql-pv.azure.yaml
+          kubernetes/mssql-secret.yaml
+          kubernetes/mssql-deployment.yaml
+          kubernetes/mvc-deployment.azure.yaml
+          kubernetes/mssql-configmap.yaml
      
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
