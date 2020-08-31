@@ -56,13 +56,6 @@ jobs:
 
           echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
 
-############################################
-
-    - name: Replace Action
-      uses: datamonsters/replace-action@v2
-      with:
-        files: infra/terraform.tfvars
-        replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
 
     ######################################
     - name: Login to Azure as User
@@ -72,6 +65,13 @@ jobs:
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
           az account list -o table
+    
+    - name: Replace Action
+      uses: datamonsters/replace-action@v2
+      with:
+        files: infra/terraform.tfvars
+        replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
+
 
     - uses: hashicorp/setup-terraform@v1
       with:
@@ -137,8 +137,7 @@ jobs:
 
     - uses: Azure/k8s-deploy@v1
       with:
-        manifests: |
-          kubernetes
+        manifests: kubernetes
      
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
