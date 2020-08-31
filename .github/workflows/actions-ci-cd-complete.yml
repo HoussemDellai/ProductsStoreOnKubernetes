@@ -62,14 +62,10 @@ jobs:
 ############################################
 
     - name: Replace Action
-      # You may pin to the exact commit or the version.
-      # uses: datamonsters/replace-action@54f8e7be24769a843c1c60a0cc9fa3c1aaa906ca
       uses: datamonsters/replace-action@v2
       with:
-        # Files, comma-separated. Supposed PLACEHOLDER in them
         files: infra/terraform.tfvars
-        # Comma-separated pairs PLACEHOLDER=value
-        replacements: '__AKS_RESOURCE_GROUP__=$AKS_RESOURCE_GROUP,__AKS_NAME__=$AKS_NAME,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
+        replacements: "__AKS_RESOURCE_GROUP__='$AKS_RESOURCE_GROUP',__AKS_NAME__=$AKS_NAME,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01"
 
     ######################################
     - name: Login to Azure as User
