@@ -69,18 +69,22 @@ jobs:
 ############################################
 
     - name: String Replace
-      # You may pin to the exact commit or the version.
-      # uses: bejoistic/str-replace@efbbb67d349eaf509144d4ce1202ed0c6fb3e340
       uses: bejoistic/str-replace@v1.0.2
       with:
-        # A regular expression of files to include in our find and replace
         include: infra/terraform.tfvars
-        # A regular expression of files to exclude in our find and replace
-        # exclude: # optional, default is .git
-        # The string we want to replace
         find: __AKS_RESOURCE_GROUP__
-        # The new string to replace with
         replace: aks-rg
+    
+    
+    - name: Replace Action
+      # You may pin to the exact commit or the version.
+      # uses: datamonsters/replace-action@54f8e7be24769a843c1c60a0cc9fa3c1aaa906ca
+      uses: datamonsters/replace-action@v2
+      with:
+        # Files, comma-separated. Supposed PLACEHOLDER in them
+        files: infra/terraform.tfvars
+        # Comma-separated pairs PLACEHOLDER=value
+        replacements: __AKS_NAME__=aks-k8s, __ACR_NAME__=acrforaks01, __SQL_INSTANCE_NAME__=sqlforaks01, __DB_ADMIN_LOGIN__=houssem, __DB_ADMIN_PASSWORD__="@Aa123456", __STORAGE_NAME__=storageforaks01
 
     - name: cat infra/terraform.tfvars
       run: cat infra/terraform.tfvars
