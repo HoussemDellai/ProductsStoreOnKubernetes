@@ -6,31 +6,30 @@ on:
   pull_request:
     branches: [ dev ]
 
+env:
+  LOCATION: westeurope
+  INFRA_RESOURCE_GROUP: tf-state-resourcegroup
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
+  TF_STATE_CONTAINER_NAME: tfstate
+  DOCKER_REPOSITORY: houssemdocker
+  IMAGE_NAME: web-app
+  IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+  TF_STATE_ACCESS_KEY: "" # will be set later
+  
+  ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
 jobs:
 
-  build:
+  pre-build:
+    name: Create storage for tfstate
     runs-on: ubuntu-latest
-    env:
-      LOCATION: westeurope
-      INFRA_RESOURCE_GROUP: tf-state-resourcegroup
-      TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
-      TF_STATE_CONTAINER_NAME: tfstate
-      DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app
-      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
-      TF_STATE_ACCESS_KEY: "" # will be set later
-      
-      ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: "4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3"
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-    
+
     steps:
 
     - uses: actions/checkout@v2
-    
-    
-    
     
     ########################
 
@@ -57,39 +56,19 @@ jobs:
           # Create a storage container (for the Terraform State)
           az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
-          echo 'The ACCOUNT_KEY is ' $ACCOUNT_KEY
-          echo "The ACCOUNT_KEY is $ACCOUNT_KEY"
           echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
-          echo 'The TF_STATE_ACCESS_KEY is ' $TF_STATE_ACCESS_KEY
-          
-    - name: echo $TF_STATE_ACCESS_KEY
-      run: echo 'The TF_STATE_ACCESS_KEY is ' $TF_STATE_ACCESS_KEY
 
 
-############################################
-
-    - name: String Replace
-      uses: bejoistic/str-replace@v1.0.2
-      with:
-        include: infra/terraform.tfvars
-        find: __AKS_RESOURCE_GROUP__
-        replace: aks-rg
-    
-    
-    - name: Replace Action
-      # You may pin to the exact commit or the version.
-      # uses: datamonsters/replace-action@54f8e7be24769a843c1c60a0cc9fa3c1aaa906ca
-      uses: datamonsters/replace-action@v2
-      with:
-        # Files, comma-separated. Supposed PLACEHOLDER in them
-        files: infra/terraform.tfvars
-        # Comma-separated pairs PLACEHOLDER=value
-        replacements: '__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
-
-    - name: cat infra/terraform.tfvars
-      run: cat infra/terraform.tfvars
-      
     ######################################
+
+  Infra:
+    name: Create Infra with Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      
     - name: Login to Azure as User
       uses: azure/CLI@v1
       with:
@@ -97,6 +76,12 @@ jobs:
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
           az account list -o table
+    
+    - name: Replace Action
+      uses: datamonsters/replace-action@v2
+      with:
+        files: infra/terraform.tfvars
+        replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
 
     - uses: hashicorp/setup-terraform@v1
       with:
@@ -107,10 +92,6 @@ jobs:
       run: terraform fmt
       working-directory: infra
       continue-on-error: true
-    
-    
-    - name: echo $TF_STATE_ACCESS_KEY
-      run: echo $TF_STATE_ACCESS_KEY
     
     - name: Terraform Init
       id: init
@@ -137,11 +118,15 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: infra
     
+    #########################  
+  build:
+    name: Build & Push Docker container
+    runs-on: ubuntu-latest
 
-######################################
+    steps:
 
-
-    #########################      
+    - uses: actions/checkout@v2
+          
     - name: Build Docker Image
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
@@ -159,69 +144,27 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
-
-
-
-    - name: 'Terraform Format'
-      uses: hashicorp/terraform-github-actions@master  
-      with:
-         tf_actions_version: $TF_VERSION
-         tf_actions_subcommand: 'fmt'
-         tf_actions_working_dir: './infra'
-         tf_actions_comment: false
-     # env:
-     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: 'Terraform Init'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: $TF_VERSION
-        tf_actions_subcommand: 'init'
-        tf_actions_working_dir: './infra'
-        tf_actions_comment: false
-     # env:
-     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: 'Terraform Validate'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: $TF_VERSION
-        tf_actions_subcommand: 'validate'
-        tf_actions_working_dir: './infra'
-        tf_actions_comment: false
-     # env:
-     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    name: Deploy app into Kubernetes
     
-    - name: 'Terraform Plan'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: $TF_VERSION
-        tf_actions_subcommand: 'plan'
-        tf_actions_working_dir: './infra'
-        tf_actions_comment: false
-     # env:
-     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
 
-    - name: 'Terraform Apply'
-      uses: hashicorp/terraform-github-actions@master
+    steps:
+
+    - uses: actions/checkout@v2
+      
+    - name: Replace Action
+      uses: datamonsters/replace-action@v2
       with:
-        tf_actions_version: $TF_VERSION
-        tf_actions_subcommand: 'apply'
-        tf_actions_working_dir: './infra'
-        tf_actions_comment: false
-        # args: '-var="client_secret=${{ secrets.clientSecret }}"'
+        files: ubernetes/mvc-deployment.azure.yaml
+        replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
 
     # Set the target AKS cluster.
     - uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: aks-k8s
-        resource-group: aks-k8s
-        
-    #- uses: Azure/k8s-create-secret@v1
-    #  with:
-    #    container-registry-url: contoso.azurecr.io
-    #    container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-    #    container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-    #    secret-name: demo-k8s-secret
+        resource-group: aks-rg
 
     - uses: Azure/k8s-deploy@v1
       with:
@@ -231,10 +174,6 @@ jobs:
           kubernetes/mssql-deployment.yaml
           kubernetes/mvc-deployment.azure.yaml
           kubernetes/mssql-configmap.yaml
-       # images: |
-       #   demo.azurecr.io/k8sdemo:${{ github.sha }}
-       # imagepullsecrets: |
-       #   demo-k8s-secret
      
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
