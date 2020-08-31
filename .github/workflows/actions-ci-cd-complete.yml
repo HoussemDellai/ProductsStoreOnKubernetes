@@ -84,7 +84,7 @@ jobs:
         # Files, comma-separated. Supposed PLACEHOLDER in them
         files: infra/terraform.tfvars
         # Comma-separated pairs PLACEHOLDER=value
-        replacements: __AKS_NAME__=aks-k8s, __ACR_NAME__=acrforaks01, __SQL_INSTANCE_NAME__=sqlforaks01, __DB_ADMIN_LOGIN__=houssem, __DB_ADMIN_PASSWORD__="@Aa123456", __STORAGE_NAME__=storageforaks01
+        replacements: __AKS_NAME__="aks-k8s", __ACR_NAME__="acrforaks01", __SQL_INSTANCE_NAME__="sqlforaks01", __DB_ADMIN_LOGIN__="houssem", __DB_ADMIN_PASSWORD__="@Aa123456", __STORAGE_NAME__="storageforaks01"
 
     - name: cat infra/terraform.tfvars
       run: cat infra/terraform.tfvars
