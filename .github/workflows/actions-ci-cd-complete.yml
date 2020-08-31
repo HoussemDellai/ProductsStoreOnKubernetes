@@ -6,24 +6,26 @@ on:
   pull_request:
     branches: [ dev ]
 
+env:
+  LOCATION: westeurope
+  INFRA_RESOURCE_GROUP: tf-state-resourcegroup
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
+  TF_STATE_CONTAINER_NAME: tfstate
+  DOCKER_REPOSITORY: houssemdocker
+  IMAGE_NAME: web-app
+  IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+  TF_STATE_ACCESS_KEY: "" # will be set later
+  
+  ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
 jobs:
 
-  build:
+  pre-build:
+    name: Create storage for tfstate
     runs-on: ubuntu-latest
-    env:
-      LOCATION: westeurope
-      INFRA_RESOURCE_GROUP: tf-state-resourcegroup
-      TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
-      TF_STATE_CONTAINER_NAME: tfstate
-      DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app
-      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
-      TF_STATE_ACCESS_KEY: "" # will be set later
-      
-      ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: "4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3"
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
 
@@ -58,6 +60,15 @@ jobs:
 
 
     ######################################
+
+  Infra:
+    name: Create Infra with Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      
     - name: Login to Azure as User
       uses: azure/CLI@v1
       with:
@@ -71,7 +82,6 @@ jobs:
       with:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
-
 
     - uses: hashicorp/setup-terraform@v1
       with:
@@ -108,8 +118,15 @@ jobs:
       run: terraform apply -auto-approve
       working-directory: infra
     
+    #########################  
+  build:
+    name: Build & Push Docker container
+    runs-on: ubuntu-latest
 
-    #########################      
+    steps:
+
+    - uses: actions/checkout@v2
+          
     - name: Build Docker Image
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
@@ -127,6 +144,20 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
+  deploy:
+    name: Deploy app into Kubernetes
+    
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+      
+    - name: Replace Action
+      uses: datamonsters/replace-action@v2
+      with:
+        files: ubernetes/mvc-deployment.azure.yaml
+        replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
 
     # Set the target AKS cluster.
     - uses: Azure/aks-set-context@v1
