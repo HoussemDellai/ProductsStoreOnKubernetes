@@ -148,12 +148,18 @@ jobs:
 #    steps:
 #
 #    - uses: actions/checkout@v2
-      
+    
+    - uses: cschleiden/replace-tokens@v1
+      with:
+        files: kubernetes/mvc-deployment.azure.yaml
+      env:
+        TAG: $GITHUB_RUN_NUMBER
+        
     - name: Replace Action
       uses: datamonsters/replace-action@v2
       with:
         files: kubernetes/mvc-deployment.azure.yaml
-        replacements: 'ACR_NAME=houssemdocker,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
+        replacements: 'ACR_NAME=houssemdocker,DOCKER_IMAGE=webapp'
         # replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
 
     - uses: Azure/aks-set-context@v1
