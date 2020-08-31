@@ -15,7 +15,7 @@ spec:
       containers:
       - name: mvc
         # image: houssemdocker/mvc-app:1.0 
-        image: ACR_NAME.azurecr.io/DOCKER_IMAGE:TAG
+        image: ACR_NAME/DOCKER_IMAGE:TAG
         # image: __ACR_NAME__.azurecr.io/__DOCKER_IMAGE__:__TAG__
         ports:
         - containerPort: 80
