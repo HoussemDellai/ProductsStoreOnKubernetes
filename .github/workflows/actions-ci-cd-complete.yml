@@ -149,6 +149,9 @@ jobs:
 #
 #    - uses: actions/checkout@v2
     
+    - name: echo $GITHUB_RUN_NUMBER
+      run: echo $GITHUB_RUN_NUMBER
+     
     - uses: cschleiden/replace-tokens@v1
       with:
         files: kubernetes/mvc-deployment.azure.yaml
