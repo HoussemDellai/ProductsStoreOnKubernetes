@@ -11,28 +11,37 @@ env:
   INFRA_RESOURCE_GROUP: tf-state-resourcegroup
   TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
   TF_STATE_CONTAINER_NAME: tfstate
+  TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
     
   DOCKER_REPOSITORY: houssemdocker
-  IMAGE_NAME: web-app
-  IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
+  IMAGE_NAME: webapp
+  IMAGE_TAG: ${{ github.run_number }}
   
   ARM_CLIENT_ID: ${{ secrets.AZURE_SP_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
+  AKS_RESOURCE_GROUP: aks-rg
+  AKS_NAME: aks-k8s
+  ACR_NAME: acrforaks01
+  SQL_INSTANCE_NAME: sqlforaks01
+  DB_ADMIN_LOGIN: houssem
+  DB_ADMIN_PASSWORD: "@Aa123456"
+  STORAGE_NAME: storageforaks01
+
 jobs:
 
-  pre-build:
-    name: Create storage for tfstate
+  build-and-deploy:
+    name: Build and deploy into AKS
     runs-on: ubuntu-latest
 
     steps:
 
     - uses: actions/checkout@v2
 
-    - name: Azure Login
+    - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -71,15 +80,15 @@ jobs:
         azcliversion: 2.10.1
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az account list -o table
     
-    - name: Replace Action
+    - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
       with:
         files: infra/terraform.tfvars
-        replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
-
+        replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
+ 
     - uses: hashicorp/setup-terraform@v1
+      name: Setup Terraform
       with:
         terraform_version: 0.13.1
     
@@ -89,13 +98,13 @@ jobs:
       working-directory: infra
       continue-on-error: true
     
-    - name: Terraform Init
+    - name: Terraform Init (Azure Backend)
       id: init
       run: terraform init
              -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
              -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
              -backend-config="access_key=$TF_STATE_ACCESS_KEY"
-             -backend-config="key=tfstate"
+             -backend-config="key=$TF_STATE_FILE_NAME"
       working-directory: infra/
     
     - name: Terraform Validate
@@ -122,10 +131,21 @@ jobs:
 #    steps:
 #
 #    - uses: actions/checkout@v2
-          
+ 
     - name: Build Docker Image
       run:
-        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
+        docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+        # docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
+    
+    - uses: Azure/container-scan@v0
+      name: Scan Docker Image using Trivy and Dockle
+      with:
+        image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+              
+    - name: Scan Docker Image using Trivy
+      continue-on-error: true
+      run:
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
     
     - name: Login to Docker Hub
       run: |
@@ -133,12 +153,7 @@ jobs:
         
     - name: Push Image to Docker Hub
       run:
-        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
-        
-    - name: Scan Docker Image using Trivy
-      continue-on-error: true
-      run:
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
 #  deploy:
 #    name: Deploy app into Kubernetes
@@ -148,20 +163,22 @@ jobs:
 #    steps:
 #
 #    - uses: actions/checkout@v2
-      
-    - name: Replace Action
+
+    - name: Replace Image Repository, Name and Tag in YAML deployment
       uses: datamonsters/replace-action@v2
       with:
-        files: ubernetes/mvc-deployment.azure.yaml
-        replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
+        files: kubernetes/mvc-deployment.azure.yaml
+        replacements: 'ACR_NAME=${{ env.DOCKER_REPOSITORY }},DOCKER_IMAGE=${{ env.IMAGE_NAME }},TAG=${{ env.IMAGE_TAG }}'
 
     - uses: Azure/aks-set-context@v1
+      name: Connect to AKS
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: aks-k8s
-        resource-group: aks-rg
+        cluster-name: ${{ env.AKS_NAME }}
+        resource-group: ${{ env.AKS_RESOURCE_GROUP }}
 
     - uses: Azure/k8s-deploy@v1
+      name: Deploy YAML manifest into AKS
       with:
         manifests: |
           kubernetes/mssql-pv.azure.yaml
@@ -174,3 +191,35 @@ jobs:
       continue-on-error: true
       run:
         kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
+        
+    - name: Deploy Prometheus into AKS using Helm
+      run: |
+        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm upgrade --install prometheus stable/prometheus --set server.service.type=LoadBalancer
+        
+    - name: Deploy Grafana into AKS using Helm
+      run: |
+        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm upgrade --install grafana stable/grafana --set service.type=LoadBalancer
+        
+    - name: Deploy Kured into AKS using Helm
+      run: |
+        helm repo add kured https://weaveworks.github.io/kured
+        # kubectl create namespace kured
+        helm upgrade kured kured/kured --namespace kured --install --create-namespace \
+          --set nodeSelector."beta\.kubernetes\.io/os"=linux \
+          --set configuration.startTime=9am \
+          --set configuration.endTime=5pm \
+          --set configuration.timeZone="America/Los_Angeles"
+          # --set configuration.rebootDays="[mo,tu,we,th,fr]"
+          
+    - name: Deploy EFK into AKS using Helm
+      run: |
+        helm install elasticsearch stable/elasticsearch
+        kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
+        helm install kibana stable/kibana -f logging-efk/kibana-values.yaml
+
+
+
+        
+
