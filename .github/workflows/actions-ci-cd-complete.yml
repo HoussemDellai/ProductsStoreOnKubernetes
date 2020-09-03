@@ -41,7 +41,7 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: Azure Login
+    - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -80,15 +80,15 @@ jobs:
         azcliversion: 2.10.1
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az account list -o table
     
-    - name: Replace Action
+    - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
       with:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
  
     - uses: hashicorp/setup-terraform@v1
+      name: Setup Terraform
       with:
         terraform_version: 0.13.1
     
@@ -98,7 +98,7 @@ jobs:
       working-directory: infra
       continue-on-error: true
     
-    - name: Terraform Init
+    - name: Terraform Init (Azure Backend)
       id: init
       run: terraform init
              -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
@@ -165,19 +165,21 @@ jobs:
 #
 #    - uses: actions/checkout@v2
 
-    - name: Replace Action
+    - name: Replace Image Repository, Name and Tag in YAML deployment
       uses: datamonsters/replace-action@v2
       with:
         files: kubernetes/mvc-deployment.azure.yaml
         replacements: 'ACR_NAME=${{ env.DOCKER_REPOSITORY }},DOCKER_IMAGE=${{ env.IMAGE_NAME }},TAG=${{ env.IMAGE_TAG }}'
 
     - uses: Azure/aks-set-context@v1
+      name: Connect to AKS
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: aks-k8s
-        resource-group: aks-rg
+        cluster-name: $AKS_NAME
+        resource-group: $AKS_RESOURCE_GROUP
 
     - uses: Azure/k8s-deploy@v1
+      name: Deploy YAML manifest into AKS
       with:
         manifests: |
           kubernetes/mssql-pv.azure.yaml
@@ -190,3 +192,14 @@ jobs:
       continue-on-error: true
       run:
         kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
+        
+    - name: Deploy Prometheus into AKS using Helm
+      run: 
+        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm install --name my-prometheus stable/prometheus
+        
+    - name: Deploy Grafana into AKS using Helm
+      run: 
+        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm install --name my-release stable/grafana
+
