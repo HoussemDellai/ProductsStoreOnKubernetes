@@ -140,7 +140,6 @@ jobs:
     - uses: Azure/container-scan@v0
       name: Scan Docker Image using Trivy and Dockle
       with:
-        # image-name: $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
               
     - name: Scan Docker Image using Trivy
@@ -175,8 +174,8 @@ jobs:
       name: Connect to AKS
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: $AKS_NAME
-        resource-group: $AKS_RESOURCE_GROUP
+        cluster-name: ${{ env.AKS_NAME }}
+        resource-group: ${{ env.AKS_RESOURCE_GROUP }}
 
     - uses: Azure/k8s-deploy@v1
       name: Deploy YAML manifest into AKS
