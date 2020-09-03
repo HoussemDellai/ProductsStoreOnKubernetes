@@ -8,7 +8,7 @@ on:
 
 env:
   LOCATION: westeurope
-  INFRA_RESOURCE_GROUP: tf-state-resourcegroup
+  INFRA_RESOURCE_GROUP: tfstate-resourcegroup
   TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0107
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: tfstate
