@@ -220,6 +220,3 @@ jobs:
         helm install kibana stable/kibana -f logging-efk/kibana-values.yaml
 
 
-
-        
-
