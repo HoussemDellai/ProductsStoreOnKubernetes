@@ -87,8 +87,7 @@ jobs:
       with:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
-        # replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
-
+ 
     - uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 0.13.1
@@ -132,10 +131,14 @@ jobs:
 #    steps:
 #
 #    - uses: actions/checkout@v2
-          
+ 
     - name: Build Docker Image
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
+    
+    - uses: Azure/container-scan@v0
+      with:
+        image-name: $ACR_NAME.azurecr.io/$IMAGE_NAME:$GITHUB_RUN_NUMBER
     
     - name: Login to Docker Hub
       run: |
