@@ -138,7 +138,8 @@ jobs:
     
     - uses: Azure/container-scan@v0
       with:
-        image-name: $ACR_NAME.azurecr.io/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        image-name: $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
+        # image-name: $ACR_NAME.azurecr.io/$IMAGE_NAME:$GITHUB_RUN_NUMBER
     
     - name: Login to Docker Hub
       run: |
