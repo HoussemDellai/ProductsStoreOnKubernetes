@@ -11,6 +11,7 @@ env:
   INFRA_RESOURCE_GROUP: tf-state-resourcegroup
   TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
   TF_STATE_CONTAINER_NAME: tfstate
+  TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
     
   DOCKER_REPOSITORY: houssemdocker
@@ -21,6 +22,14 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_SP_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+  AKS_RESOURCE_GROUP: aks-rg
+  AKS_NAME: aks-k8s
+  ACR_NAME: acrforaks01
+  SQL_INSTANCE_NAME: sqlforaks01
+  DB_ADMIN_LOGIN: houssem
+  DB_ADMIN_PASSWORD: "@Aa123456"
+  STORAGE_NAME: storageforaks01
 
 jobs:
 
@@ -77,7 +86,8 @@ jobs:
       uses: datamonsters/replace-action@v2
       with:
         files: infra/terraform.tfvars
-        replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
+        replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
+        # replacements: '__AKS_RESOURCE_GROUP__=aks-rg,__AKS_NAME__=aks-k8s,__ACR_NAME__=acrforaks01,__SQL_INSTANCE_NAME__=sqlforaks01,__DB_ADMIN_LOGIN__=houssem,__DB_ADMIN_PASSWORD__=@Aa123456,__STORAGE_NAME__=storageforaks01'
 
     - uses: hashicorp/setup-terraform@v1
       with:
@@ -95,7 +105,7 @@ jobs:
              -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
              -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
              -backend-config="access_key=$TF_STATE_ACCESS_KEY"
-             -backend-config="key=tfstate"
+             -backend-config="key=$TF_STATE_FILE_NAME"
       working-directory: infra/
     
     - name: Terraform Validate
@@ -154,8 +164,6 @@ jobs:
       with:
         files: kubernetes/mvc-deployment.azure.yaml
         replacements: 'ACR_NAME=${{ env.DOCKER_REPOSITORY }},DOCKER_IMAGE=${{ env.IMAGE_NAME }},TAG=${{ env.IMAGE_TAG }}'
-        # replacements: 'ACR_NAME=houssemdocker,DOCKER_IMAGE=webapp,TAG=${{ github.run_number }}'
-        # replacements: 'ACR_NAME=acrforaks01,DOCKER_IMAGE=webapp,TAG=$GITHUB_RUN_NUMBER'
 
     - uses: Azure/aks-set-context@v1
       with:
