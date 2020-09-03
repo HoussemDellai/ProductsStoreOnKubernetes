@@ -193,12 +193,12 @@ jobs:
         kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
         
     - name: Deploy Prometheus into AKS using Helm
-      run: 
+      run: |
         helm repo add stable https://kubernetes-charts.storage.googleapis.com
-        helm install --name my-prometheus stable/prometheus
+        helm install prometheus stable/prometheus
         
     - name: Deploy Grafana into AKS using Helm
-      run: 
+      run: |
         helm repo add stable https://kubernetes-charts.storage.googleapis.com
-        helm install --name my-release stable/grafana
+        helm install grafana stable/grafana
 
