@@ -212,4 +212,14 @@ jobs:
           --set configuration.endTime=5pm \
           --set configuration.timeZone="America/Los_Angeles"
           # --set configuration.rebootDays="[mo,tu,we,th,fr]"
+          
+    - name: Deploy EFK into AKS using Helm
+      run: |
+        helm install elasticsearch stable/elasticsearch
+        kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
+        helm install kibana stable/kibana -f logging-efk/kibana-values.yaml
+
+
+
+        
 
