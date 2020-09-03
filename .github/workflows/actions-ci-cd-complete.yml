@@ -208,7 +208,7 @@ jobs:
         # kubectl create namespace kured
         helm upgrade kured kured/kured --namespace kured --install --create-namespace \
           --set nodeSelector."beta\.kubernetes\.io/os"=linux \
-          --set configuration.rebootDays="mon,tue,wed,thu,fri" \
+          --set configuration.rebootDays="[su,mo,tu,we,th,fr,sa]" \
           --set configuration.startTime=9am \
           --set configuration.endTime=5pm \
           --set configuration.timeZone="America/Los_Angeles"
