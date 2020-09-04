@@ -114,13 +114,13 @@ jobs:
     
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color
+      run: terraform plan -out out.plan -var-file="terraform.tfvars"
       working-directory: infra
       continue-on-error: true
       
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve
+      run: terraform apply out.plan -var-file="terraform.tfvars" -auto-approve
       working-directory: infra
 
 #  build:
