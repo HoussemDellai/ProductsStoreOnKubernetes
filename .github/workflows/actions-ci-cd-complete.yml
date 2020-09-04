@@ -8,8 +8,8 @@ on:
 
 env:
   LOCATION: westeurope
-  INFRA_RESOURCE_GROUP: tf-state-resourcegroup
-  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0101
+  INFRA_RESOURCE_GROUP: tfstate-resourcegroup
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage107
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
@@ -23,13 +23,13 @@ env:
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-  AKS_RESOURCE_GROUP: aks-rg
-  AKS_NAME: aks-k8s
-  ACR_NAME: acrforaks01
-  SQL_INSTANCE_NAME: sqlforaks01
+  AKS_RESOURCE_GROUP: aks-107-rg
+  AKS_NAME: aks-107
+  ACR_NAME: acrforaks107
+  SQL_INSTANCE_NAME: sqlforaks107
   DB_ADMIN_LOGIN: houssem
   DB_ADMIN_PASSWORD: "@Aa123456"
-  STORAGE_NAME: storageforaks01
+  STORAGE_NAME: storageforaks107
 
 jobs:
 
@@ -90,7 +90,7 @@ jobs:
     - uses: hashicorp/setup-terraform@v1
       name: Setup Terraform
       with:
-        terraform_version: 0.13.1
+        terraform_version: 0.13.2 # 0.13.1
     
     - name: Terraform fmt
       id: fmt
@@ -114,13 +114,13 @@ jobs:
     
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color
+      run: terraform plan -out out.plan -var-file="terraform.tfvars"
       working-directory: infra
       continue-on-error: true
       
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve out.plan
       working-directory: infra
 
 #  build:
@@ -220,6 +220,4 @@ jobs:
         helm install kibana stable/kibana -f logging-efk/kibana-values.yaml
 
 
-
-        
 
