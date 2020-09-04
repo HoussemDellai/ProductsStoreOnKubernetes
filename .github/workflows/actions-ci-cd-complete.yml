@@ -190,7 +190,7 @@ jobs:
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
       run:
-        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
+        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never
         
     - name: Deploy Kured into AKS using Helm
       run: |
