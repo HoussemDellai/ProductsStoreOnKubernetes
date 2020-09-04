@@ -9,7 +9,7 @@ on:
 env:
   LOCATION: westeurope
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
-  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage109
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage19
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
@@ -23,13 +23,13 @@ env:
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-  AKS_RESOURCE_GROUP: aks-109-rg
+  AKS_RESOURCE_GROUP: aks-19-rg
   AKS_NAME: aks-109
-  ACR_NAME: acrforaks109
-  SQL_INSTANCE_NAME: sqlforaks109
+  ACR_NAME: acrforaks19
+  SQL_INSTANCE_NAME: sqlforaks19
   DB_ADMIN_LOGIN: houssem
   DB_ADMIN_PASSWORD: "@Aa123456"
-  STORAGE_NAME: storageforaks109
+  STORAGE_NAME: storageforaks19
 
 jobs:
 
@@ -90,7 +90,7 @@ jobs:
     - uses: hashicorp/setup-terraform@v1
       name: Setup Terraform
       with:
-        terraform_version: 0.13.2 # 0.13.1
+        terraform_version: 0.13.2
     
     - name: Terraform fmt
       id: fmt
