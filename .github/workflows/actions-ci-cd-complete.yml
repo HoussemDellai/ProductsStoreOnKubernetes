@@ -120,7 +120,7 @@ jobs:
       
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply out.plan -var-file="terraform.tfvars" -auto-approve
+      run: terraform apply -auto-approve out.plan
       working-directory: infra
 
 #  build:
