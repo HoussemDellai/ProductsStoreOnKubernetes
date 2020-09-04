@@ -211,9 +211,9 @@ jobs:
         
     - name: Deploy EFK into AKS using Helm
       run: |
-        helm install elasticsearch stable/elasticsearch
+        helm upgrade elasticsearch stable/elasticsearch --install
         kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
-        helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml --set service.type=LoadBalancer
+        helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml
 
 
 
