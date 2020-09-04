@@ -1,0 +1,7 @@
+resource_group_name = "aks-01-rg"
+cluster_name        = "aks-01"
+acr_name            = "acrforaks01"
+sql_name            = "sqlforaks01"
+db_admin_login      = "houssem"
+db_admin_password   = "@Aa123456"
+storage_name        = "storageforaks01"

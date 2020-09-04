@@ -1,8 +1,12 @@
 
-az ad sp create-for-rbac --sdk-auth --role contributor --name "sp-github-actions-ci-cd"
+az ad sp create-for-rbac --name "azure-sp-github-actions-ci-cd" --role owner --sdk-auth
+
+terraform fmt
 
 terraform init
 
-terraform plan -out out.plan
+terraform validate
+
+terraform plan -out out.plan -var-file="terraform.local.tfvars"
 
 terraform apply out.plan
