@@ -1,5 +1,5 @@
-variable agent_count {
-  default = 1
+variable node_count {
+  default = 3
 }
 
 variable dns_prefix {

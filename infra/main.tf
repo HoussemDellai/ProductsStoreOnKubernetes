@@ -1,15 +1,3 @@
-// provider "azurerm" {
-//   version = ">=2.0"
-//   # The "feature" block is required for AzureRM provider 2.x.
-//   features {}
-//   # Get the following credentials by running the command:
-//   # $ az ad sp create-for-rbac --sdk-auth
-//   # subscription_id = var.subscription_id
-//   # client_id       = var.client_id
-//   # client_secret   = var.client_secret
-//   # tenant_id       = var.tenant_id
-// }
-
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
@@ -24,7 +12,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   default_node_pool {
     name       = "default"
-    node_count = var.agent_count
+    node_count = var.node_count
     vm_size    = "Standard_DS2_v2"
   }
 
