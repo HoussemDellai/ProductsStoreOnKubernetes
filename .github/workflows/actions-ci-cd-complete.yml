@@ -9,7 +9,7 @@ on:
 env:
   LOCATION: westeurope
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
-  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage0107
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage107
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
@@ -23,13 +23,13 @@ env:
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-  AKS_RESOURCE_GROUP: aks-demo-rg
-  AKS_NAME: aks-demo
-  ACR_NAME: acrforaks0107
-  SQL_INSTANCE_NAME: sqlforaks0107
+  AKS_RESOURCE_GROUP: aks-107-rg
+  AKS_NAME: aks-107
+  ACR_NAME: acrforaks107
+  SQL_INSTANCE_NAME: sqlforaks107
   DB_ADMIN_LOGIN: houssem
   DB_ADMIN_PASSWORD: "@Aa123456"
-  STORAGE_NAME: storageforaks0107
+  STORAGE_NAME: storageforaks107
 
 jobs:
 
