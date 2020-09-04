@@ -192,16 +192,6 @@ jobs:
       run:
         kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
         
-    - name: Deploy Prometheus into AKS using Helm
-      run: |
-        helm repo add stable https://kubernetes-charts.storage.googleapis.com
-        helm upgrade --install prometheus stable/prometheus --set server.service.type=LoadBalancer
-        
-    - name: Deploy Grafana into AKS using Helm
-      run: |
-        helm repo add stable https://kubernetes-charts.storage.googleapis.com
-        helm upgrade --install grafana stable/grafana --set service.type=LoadBalancer
-        
     - name: Deploy Kured into AKS using Helm
       run: |
         helm repo add kured https://weaveworks.github.io/kured
@@ -213,11 +203,17 @@ jobs:
           --set configuration.timeZone="America/Los_Angeles"
           # --set configuration.rebootDays="[mo,tu,we,th,fr]"
           
+    - name: Deploy Prometheus & Grafana into AKS using Helm
+      run: |
+        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm upgrade --install prometheus stable/prometheus --set server.service.type=LoadBalancer
+        helm upgrade --install grafana stable/grafana --set service.type=LoadBalancer
+        
     - name: Deploy EFK into AKS using Helm
       run: |
         helm install elasticsearch stable/elasticsearch
         kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
-        helm install kibana stable/kibana -f logging-efk/kibana-values.yaml
+        helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml --set service.type=LoadBalancer
 
 
 
