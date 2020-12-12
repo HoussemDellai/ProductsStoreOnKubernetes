@@ -9,7 +9,7 @@ on:
 env:
   LOCATION: westeurope
   INFRA_RESOURCE_GROUP: tfstate-resourcegroup
-  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage103
+  TF_STATE_STORAGE_ACCOUNT_NAME: tfstatestorage102
   TF_STATE_CONTAINER_NAME: tfstate
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
@@ -23,13 +23,13 @@ env:
   ARM_SUBSCRIPTION_ID:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-  AKS_RESOURCE_GROUP: aks-103-rg
-  AKS_NAME: aks-103
-  ACR_NAME: acrforaks103
-  SQL_INSTANCE_NAME: sqlforaks103
+  AKS_RESOURCE_GROUP: aks-102-rg
+  AKS_NAME: aks-102
+  ACR_NAME: acrforaks102
+  SQL_INSTANCE_NAME: sqlforaks102
   DB_ADMIN_LOGIN: houssem
   DB_ADMIN_PASSWORD: "@Aa123456"
-  STORAGE_NAME: storageforaks103
+  STORAGE_NAME: storageforaks102
 
 jobs:
 
@@ -190,7 +190,7 @@ jobs:
     - name: Run Kube Advisor to check for Resource Limits
       continue-on-error: true
       run:
-        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
+        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never
         
     - name: Deploy Kured into AKS using Helm
       run: |
@@ -211,9 +211,9 @@ jobs:
         
     - name: Deploy EFK into AKS using Helm
       run: |
-        helm install elasticsearch stable/elasticsearch
+        helm upgrade elasticsearch stable/elasticsearch --install
         kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
-        helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml --set service.type=LoadBalancer
+        helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml
 
 
 
