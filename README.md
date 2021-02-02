@@ -1,6 +1,6 @@
 ![Docker Image CI](https://github.com/HoussemDellai/ProductsStoreOnKubernetes/workflows/Docker%20Image%20CI/badge.svg)
 
-# ProductsStoreOnKubernetes
+# ProductsStore on Kubernetes
 
 This is a sample application used to demonstrate how to create dockerized apps and deploy them to Kubernetes cluster.  
 
