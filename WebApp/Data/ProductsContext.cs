@@ -7,11 +7,12 @@ using WebApp.Models;
 
 namespace WebApp.Data
 {
-    public class WebAppContext : DbContext
+    public class ProductsContext : DbContext
     {
-        public WebAppContext (DbContextOptions<WebAppContext> options)
+        public ProductsContext (DbContextOptions<ProductsContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<WebApp.Models.Product> Product { get; set; }

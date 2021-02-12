@@ -12,9 +12,9 @@ namespace WebApp.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly WebAppContext _context;
+        private readonly ProductsContext _context;
 
-        public ProductsController(WebAppContext context)
+        public ProductsController(ProductsContext context)
         {
             _context = context;
         }

@@ -6,7 +6,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY "WebApp/WebApp.csproj" .
+COPY "WebApp.csproj" .
 RUN dotnet restore "WebApp.csproj"
 COPY . .
 RUN dotnet build "WebApp.csproj" -c Release -o /app/build
