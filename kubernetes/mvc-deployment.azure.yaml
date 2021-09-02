@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
       - name: mvc
-        image: demoaks0acr.azurecr.io/web-app:1.3
-        # image: houssemdocker/webapp:111
+        # image: demoaks0acr.azurecr.io/web-app:1.3
+        image: houssemdocker/webapp:#{Build.BuildId}#
         # image: ACR_NAME/DOCKER_IMAGE:TAG
         # image: __ACR_NAME__.azurecr.io/__DOCKER_IMAGE__:__TAG__
         ports:
