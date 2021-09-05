@@ -206,13 +206,13 @@ jobs:
           
     - name: Deploy Prometheus & Grafana into AKS using Helm
       run: |
-        helm repo add stable https://kubernetes-charts.storage.googleapis.com
+        helm repo add "stable" https://charts.helm.sh/stable
         helm upgrade --install prometheus stable/prometheus --set server.service.type=LoadBalancer
         helm upgrade --install grafana stable/grafana --set service.type=LoadBalancer
         
     - name: Deploy EFK into AKS using Helm
       run: |
-        helm upgrade elasticsearch stable/elasticsearch --install
+        helm upgrade --install elasticsearch stable/elasticsearch 
         kubectl apply -f logging-efk/fluentd-daemonset-elasticsearch.yaml
         helm upgrade kibana stable/kibana --install -f logging-efk/kibana-values.yaml
 
