@@ -63,7 +63,8 @@ jobs:
           # Create a storage container (for the Terraform State)
           az storage container create --name $TF_STATE_CONTAINER_NAME --account-name $TF_STATE_STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY
 
-          echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
+          echo "TF_STATE_ACCESS_KEY=$ACCOUNT_KEY" >> $GITHUB_ENV
+          # echo "::set-env name=TF_STATE_ACCESS_KEY::$ACCOUNT_KEY"
 
 #  infra:
 #    name: Create Infra with Terraform
