@@ -139,6 +139,7 @@ jobs:
     
     - uses: Azure/container-scan@v0
       name: Scan Docker Image using Trivy and Dockle
+      continue-on-error: true
       with:
         image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
               
