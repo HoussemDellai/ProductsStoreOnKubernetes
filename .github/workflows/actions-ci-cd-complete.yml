@@ -155,7 +155,7 @@ jobs:
         azcliversion: 2.27.2
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az acr login -n $DOCKER_REPOSITORY 
+          az acr login -n $DOCKER_REPOSITORY --expose-token
 
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
