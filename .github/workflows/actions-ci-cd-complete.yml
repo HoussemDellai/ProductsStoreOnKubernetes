@@ -14,7 +14,8 @@ env:
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
     
-  DOCKER_REPOSITORY: houssemdocker
+  DOCKER_REPOSITORY: $ACR_NAME
+  # DOCKER_REPOSITORY: houssemdocker
   IMAGE_NAME: webapp
   IMAGE_TAG: ${{ github.run_number }}
   
@@ -147,11 +148,30 @@ jobs:
       continue-on-error: true
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
-    
-    - name: Login to Docker Hub
-      run: |
-        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
-        
+
+    - name: Login to Azure and to ACR using SPN
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.10.1
+        inlineScript: |
+          az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az acr login -n $DOCKER_REPOSITORY
+
+#    - name: 'Build and push image'
+#      uses: azure/docker-login@v1
+#      with:
+#        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+#          username: ${{ secrets.REGISTRY_USERNAME }}
+#          password: ${{ secrets.REGISTRY_PASSWORD }}
+#          
+#    - run: |
+#        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+#        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+            
+#    - name: Login to Docker Hub
+#      run: |
+#        echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+#        
     - name: Push Image to Docker Hub
       run:
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
