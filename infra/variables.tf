@@ -10,6 +10,10 @@ variable cluster_name {
   default = "aks-k8s-2022"
 }
 
+variable kubernetes_version {
+  default = "1.21.2"
+}
+
 variable acr_name {
   default = "acrforaks2022"
 }
