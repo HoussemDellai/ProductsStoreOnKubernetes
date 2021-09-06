@@ -163,7 +163,7 @@ jobs:
 
     - name: Login to ACR
       run: |
-        echo "${{ env.ACR_TOKEN }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+        echo "${{ env.ACR_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
         
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
