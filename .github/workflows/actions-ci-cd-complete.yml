@@ -50,7 +50,7 @@ jobs:
     - name: Create storage for tfstate
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.10.1
+        azcliversion: 2.27.2
         inlineScript: |
           # Create the resource group
           az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION          
