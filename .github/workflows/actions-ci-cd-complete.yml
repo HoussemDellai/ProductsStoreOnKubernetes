@@ -14,7 +14,7 @@ env:
   TF_STATE_FILE_NAME: tfstate
   TF_STATE_ACCESS_KEY: "" # will be set later
     
-  DOCKER_REPOSITORY: acrforaks102
+  DOCKER_REPOSITORY: acrforaks102.azurecr.io
   # DOCKER_REPOSITORY: houssemdocker
   IMAGE_NAME: webapp
   IMAGE_TAG: ${{ github.run_number }}
