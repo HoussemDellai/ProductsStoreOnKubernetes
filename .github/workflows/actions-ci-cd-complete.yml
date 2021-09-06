@@ -152,10 +152,10 @@ jobs:
     - name: Login to Azure and to ACR using SPN
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.10.1
+        azcliversion: 2.27.2
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az acr login -n $DOCKER_REPOSITORY
+          az acr login -n $DOCKER_REPOSITORY 
 
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
