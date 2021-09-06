@@ -149,14 +149,19 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
-    - name: Login to Azure and to ACR using SPN
+    - name: Login to Azure using SPN and get ACR token
       uses: azure/CLI@v1
       with:
         azcliversion: 2.27.2
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az acr login -n $DOCKER_REPOSITORY --expose-token
+          ACR_TOKEN=$(az acr login -n $DOCKER_REPOSITORY --expose-token)
+          echo "ACR_TOKEN=$ACR_TOKEN" >> $GITHUB_ENV
 
+    - name: Login to ACR
+      run: |
+        echo "${{ env.ACR_TOKEN }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
+        
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
 #      with:
