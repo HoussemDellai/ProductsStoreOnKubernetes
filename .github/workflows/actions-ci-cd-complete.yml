@@ -155,6 +155,9 @@ jobs:
         azcliversion: 2.27.2
         inlineScript: |
           az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          ACR_PASSWORD=$(az acr credential show -n acrforaks102 --query passwords[0].value)
+          echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_ENV
+          
           ACR_TOKEN=$(az acr login -n $DOCKER_REPOSITORY --expose-token) | jq .accessToken
           echo "ACR_TOKEN=$ACR_TOKEN" >> $GITHUB_ENV
 
