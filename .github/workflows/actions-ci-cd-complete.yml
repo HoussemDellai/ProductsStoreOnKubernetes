@@ -174,7 +174,8 @@ jobs:
 
     - name: Login to ACR
       run: |
-        echo ${{ env.ACR_TOKEN }} | docker login $DOCKER_REPOSITORY -u ${{ secrets.AZURE_SP_CLIENT_ID }} --password-stdin
+        docker login $DOCKER_REPOSITORY -u ${{ secrets.AZURE_SP_CLIENT_ID }} --password ${{ env.ACR_TOKEN }}
+        # echo ${{ env.ACR_TOKEN }} | docker login $DOCKER_REPOSITORY -u ${{ secrets.AZURE_SP_CLIENT_ID }} --password-stdin
         # echo ${{ env.ACR_PASSWORD }} | docker login $DOCKER_REPOSITORY -u ${{ secrets.AZURE_SP_CLIENT_ID }} --password-stdin
         # echo ${{ env.ACR_PASSWORD }} | docker login -u $DOCKER_REPOSITORY --password-stdin
         
