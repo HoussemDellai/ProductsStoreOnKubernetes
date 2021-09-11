@@ -172,8 +172,11 @@ jobs:
     - name: Login to ACR
       run: |
         ACR_PASSWORD=$(az acr credential show -n $ACR_NAME -o tsv --query passwords[0].value)
-        echo $ACR_PASSWORD
-        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password $ACR_PASSWORD # '1FYGAsIENf2+24J9rHNjYMrBJ3EB0OB6' # 
+        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password $ACR_PASSWORD
+        
+    - name: Push Image to ACR
+      run: |
+        docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
         
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
