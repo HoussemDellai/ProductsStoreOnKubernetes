@@ -86,14 +86,14 @@ jobs:
     
     - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
       with:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
  
     - uses: hashicorp/setup-terraform@v1
       name: Setup Terraform
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
       with:
         terraform_version: 0.13.2 # 1.0.6 # 
     
@@ -102,7 +102,7 @@ jobs:
       run: terraform fmt
       working-directory: infra
       continue-on-error: true
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
     
     - name: Terraform Init (Azure Backend)
       id: init
@@ -112,26 +112,26 @@ jobs:
              -backend-config="access_key=$TF_STATE_ACCESS_KEY"
              -backend-config="key=$TF_STATE_FILE_NAME"
       working-directory: infra/
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
     
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
       working-directory: infra
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
     
     - name: Terraform Plan
       id: plan
       run: terraform plan -out out.plan -var-file="terraform.tfvars"
       working-directory: infra
       continue-on-error: true
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
       
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve out.plan
       working-directory: infra
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
 
 #  build:
 #    name: Build & Push Docker container
@@ -150,13 +150,13 @@ jobs:
     - uses: Azure/container-scan@v0
       name: Scan Docker Image using Trivy and Dockle
       continue-on-error: true
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
       with:
         image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
               
     - name: Scan Docker Image using Trivy
       continue-on-error: true
-      if: $RUN_ALL_STEPS
+      if: ${{ $RUN_ALL_STEPS == 'true' }}
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
