@@ -40,8 +40,6 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
-
     - name: Login to Azure
       uses: azure/login@v1
       with:
@@ -88,8 +86,8 @@ jobs:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
  
-    - uses: hashicorp/setup-terraform@v1
-      name: Setup Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 0.13.2 # 1.0.6 # 
     
@@ -100,7 +98,6 @@ jobs:
       continue-on-error: true
     
     - name: Terraform Init (Azure Backend)
-      id: init
       run: terraform init
              -backend-config="storage_account_name=$TF_STATE_STORAGE_ACCOUNT_NAME"
              -backend-config="container_name=$TF_STATE_CONTAINER_NAME"
@@ -109,12 +106,10 @@ jobs:
       working-directory: infra/
     
     - name: Terraform Validate
-      id: validate
       run: terraform validate -no-color
       working-directory: infra
     
     - name: Terraform Plan
-      id: plan
       run: terraform plan -out out.plan -var-file="terraform.tfvars"
       working-directory: infra
       continue-on-error: true
@@ -137,8 +132,8 @@ jobs:
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
-    - uses: Azure/container-scan@v0
-      name: Scan Docker Image using Trivy and Dockle
+    - name: Scan Docker Image using Trivy and Dockle
+      uses: Azure/container-scan@v0
       continue-on-error: true
       with:
         image-name: ${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
@@ -172,15 +167,15 @@ jobs:
         files: kubernetes/mvc-deployment.azure.yaml
         replacements: 'ACR_NAME=${{ env.DOCKER_REPOSITORY }},DOCKER_IMAGE=${{ env.IMAGE_NAME }},TAG=${{ env.IMAGE_TAG }}'
 
-    - uses: Azure/aks-set-context@v1
-      name: Connect to AKS
+    - name: Connect to AKS
+      uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: ${{ env.AKS_NAME }}
         resource-group: ${{ env.AKS_RESOURCE_GROUP }}
 
-    - uses: Azure/k8s-deploy@v1
-      name: Deploy YAML manifest into AKS
+    - name: Deploy YAML manifest into AKS
+      uses: Azure/k8s-deploy@v1
       with:
         manifests: |
           kubernetes/mssql-pv.azure.yaml
