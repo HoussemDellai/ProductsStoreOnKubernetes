@@ -182,6 +182,7 @@ jobs:
 #        
     - name: Push Image to Docker Hub
       run: |
+        az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
         az acr login -n $DOCKER_REPOSITORY --expose-token
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
