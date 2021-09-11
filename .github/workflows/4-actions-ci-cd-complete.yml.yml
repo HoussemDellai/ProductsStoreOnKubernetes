@@ -154,6 +154,11 @@ jobs:
       run:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Login to ACR
       run: |
         ACR_PASSWORD=$(az acr credential show -n $ACR_NAME -o tsv --query passwords[0].value)
@@ -177,6 +182,11 @@ jobs:
       with:
         files: kubernetes/mvc-deployment.azure.yaml
         replacements: 'ACR_NAME=${{ env.DOCKER_REPOSITORY }},DOCKER_IMAGE=${{ env.IMAGE_NAME }},TAG=${{ env.IMAGE_TAG }}'
+        
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Connect to AKS
       uses: Azure/aks-set-context@v1
