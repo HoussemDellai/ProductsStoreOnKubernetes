@@ -171,10 +171,9 @@ jobs:
  
     - name: Login to ACR
       run: |
-        # az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-        ACR_PASSWORD=$(az acr credential show -n acrforaks102 --query passwords[0].value)
+        ACR_PASSWORD=$(az acr credential show -n $ACR_NAME -o tsv --query passwords[0].value)
         echo $ACR_PASSWORD
-        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password '1FYGAsIENf2+24J9rHNjYMrBJ3EB0OB6' # $ACR_PASSWORD
+        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password $ACR_PASSWORD # '1FYGAsIENf2+24J9rHNjYMrBJ3EB0OB6' # 
         
 #    - name: 'Build and push image'
 #      uses: azure/docker-login@v1
