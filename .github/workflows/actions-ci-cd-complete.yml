@@ -150,16 +150,21 @@ jobs:
 #        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
     - name: Login to Azure using SPN and get ACR token
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.27.2
-        inlineScript: |
-          az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          ACR_PASSWORD=$(az acr credential show -n acrforaks102 --query passwords[0].value)
-          echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_ENV
-          
-          ACR_TOKEN=$(az acr login -n $DOCKER_REPOSITORY --expose-token) | jq .accessToken
-          echo "ACR_ACCESS_TOKEN=$ACR_TOKEN" >> $GITHUB_ENV
+      run: |
+        az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+        ACR_TOKEN=$(az acr login -n $DOCKER_REPOSITORY --expose-token) | jq .accessToken
+        docker login $DOCKER_REPOSITORY --username $ACR_NAME --password $ACR_TOKEN
+#    - name: Login to Azure using SPN and get ACR token
+#      uses: azure/CLI@v1
+#      with:
+#        azcliversion: 2.27.2
+#        inlineScript: |
+#          az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+#          ACR_PASSWORD=$(az acr credential show -n acrforaks102 --query passwords[0].value)
+#          echo "ACR_PASSWORD=$ACR_PASSWORD" >> $GITHUB_ENV
+#          
+#          ACR_TOKEN=$(az acr login -n $DOCKER_REPOSITORY --expose-token) | jq .accessToken
+#          echo "ACR_ACCESS_TOKEN=$ACR_TOKEN" >> $GITHUB_ENV
  
     - name: Login to ACR
       run: |
