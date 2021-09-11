@@ -187,6 +187,7 @@ jobs:
       run: |
         az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
         az acr login -n $DOCKER_REPOSITORY --expose-token
+        docker login $DOCKER_REPOSITORY -i $ACR_NAME -p '1FYGAsIENf2+24J9rHNjYMrBJ3EB0OB6'
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
 #  deploy:
