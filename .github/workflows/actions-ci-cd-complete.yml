@@ -86,7 +86,7 @@ jobs:
     
     - name: Replace Variables in terraform.tfvars
       uses: datamonsters/replace-action@v2
-      if: $LIGHT_PIPELINE
+      if: $RUN_ALL_STEPS
       with:
         files: infra/terraform.tfvars
         replacements: '__AKS_RESOURCE_GROUP__=${{ env.AKS_RESOURCE_GROUP }},__AKS_NAME__=${{ env.AKS_NAME }},__ACR_NAME__=${{ env.ACR_NAME }},__SQL_INSTANCE_NAME__=${{ env.SQL_INSTANCE_NAME }},__DB_ADMIN_LOGIN__=${{ env.DB_ADMIN_LOGIN }},__DB_ADMIN_PASSWORD__=${{ env.DB_ADMIN_PASSWORD }},__STORAGE_NAME__=${{ env.STORAGE_NAME }}'
