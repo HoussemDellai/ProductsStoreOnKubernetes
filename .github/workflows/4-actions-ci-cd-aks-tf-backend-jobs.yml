@@ -15,7 +15,6 @@ env:
   TF_STATE_ACCESS_KEY: "" # will be set later
     
   DOCKER_REPOSITORY: acrforaks102.azurecr.io
-  # DOCKER_REPOSITORY: houssemdocker
   IMAGE_NAME: webapp
   IMAGE_TAG: ${{ github.run_number }}
   
@@ -72,13 +71,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
-#    - name: Login to Azure with SPN
-#      uses: azure/CLI@v1
-#      with:
-#        azcliversion: 2.27.2
-#        inlineScript: |
-#          az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-    
     - name: Get TF backend storage account key
       uses: azure/CLI@v1
       with:
@@ -100,7 +92,7 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        terraform_version: 1.0.6 # 0.13.2 # 
+        terraform_version: 1.0.6 
     
     - name: Terraform fmt
       id: fmt
