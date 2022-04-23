@@ -2,7 +2,8 @@ name: 1-actions-ci-cd-aks
 
 on:
   push:
-    branches: none # [ main ]
+    branches: [ main ]
+    paths: .github/workflows/1-actions-ci-cd-aks.yml
   pull_request:
     branches:  none # [ release ]
   # Allows you to run this workflow manually from the Actions tab
@@ -76,7 +77,7 @@ jobs:
     
     - name: Run Kube-Bench to check cluster config
       continue-on-error: true
-      run:
+      run: |
         kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job-aks.yaml
         sleep 30s
         kubectl logs job.batch/kube-bench
