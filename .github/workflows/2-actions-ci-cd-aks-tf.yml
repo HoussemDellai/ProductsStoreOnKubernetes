@@ -20,7 +20,13 @@ jobs:
       AKS_RESOURCE_GROUP: rg-aks-cluster-tf
       AKS_NAME: aks-cluster
       TERRAFORM_VERSION: 1.1.9
-      
+      WORKING_DIRECTORY: infra
+        # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        
     steps:
 
     - uses: actions/checkout@v2
