@@ -50,7 +50,7 @@ jobs:
       run:
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
-    - name: Replace tokens
+    - name: Replace tokens in terraform.tfvars
       uses: cschleiden/replace-tokens@v1.0
       with:
         tokenPrefix: __
@@ -65,7 +65,7 @@ jobs:
         DB_ADMIN_PASSWORD: "@Aa123456"
         STORAGE_NAME: storageforsql011
     
-    - name: Find and Replace
+    - name: Replace azurerm with local in backend.tf
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: "azurerm"
