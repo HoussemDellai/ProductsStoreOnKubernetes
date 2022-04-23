@@ -46,21 +46,21 @@ jobs:
     - name: Push Image to Docker Hub
       run:
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
-#
-#    - name: Replace tokens
-#      uses: cschleiden/replace-tokens@v1.0
-#      with:
-#        tokenPrefix: __
-#        tokenSuffix: __
-#        files: terraform.tfvars
-#      env:
-#        AKS_RESOURCE_GROUP: $AKS_RESOURCE_GROUP
-#        AKS_NAME: $AKS_NAME
-#        ACR_NAME: $ACR_NAME
-#        SQL_INSTANCE_NAME: sqlforaks-github-2020
-#        DB_ADMIN_LOGIN: houssem
-#        DB_ADMIN_PASSWORD: "@Aa123456"
-#        STORAGE_NAME: storageforsqlgithub2020
+
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1.0
+      with:
+        tokenPrefix: __
+        tokenSuffix: __
+        files: terraform.tfvars
+      env:
+        AKS_RESOURCE_GROUP: $AKS_RESOURCE_GROUP
+        AKS_NAME: $AKS_NAME
+        ACR_NAME: $ACR_NAME
+        SQL_INSTANCE_NAME: sqlforaks-github-2020
+        DB_ADMIN_LOGIN: houssem
+        DB_ADMIN_PASSWORD: "@Aa123456"
+        STORAGE_NAME: storageforsqlgithub2020
 #    
 #    - name: Find and Replace
 #      uses: shitiomatic/str-replace@master
