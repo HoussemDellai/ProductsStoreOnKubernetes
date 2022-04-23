@@ -51,6 +51,8 @@ jobs:
     - uses: cschleiden/replace-tokens@v1
       with:
         files: '["kubernetes/*.yaml"]'
+        tokenPrefix: __ # optional, default is #{
+        tokenSuffix: __ # optional, default is }#
       env:
         DOCKER_REPOSITORY: houssemdocker
         IMAGE_NAME: webapp
