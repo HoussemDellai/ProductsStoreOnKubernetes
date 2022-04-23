@@ -2,9 +2,11 @@ name: Build & Deploy to AKS
 
 on:
   push:
-    branches: [ main ]
+    branches: none # [ main ]
   pull_request:
-    branches: [ release ]
+    branches:  none # [ release ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
 
@@ -14,6 +16,9 @@ jobs:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: webapp
       IMAGE_TAG: $GITHUB_RUN_NUMBER
+      
+      CLUSTER_NAME: aks-cluster
+      RESOURSE_GROUP: rg-aks-cluster
     
     steps:
 
@@ -39,9 +44,9 @@ jobs:
     # Set the target AKS cluster.
     - uses: Azure/aks-set-context@v1
       with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: aks
-        resource-group: aks
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.RESOURSE_GROUP }}
    
     - uses: cschleiden/replace-tokens@v1
       with:
