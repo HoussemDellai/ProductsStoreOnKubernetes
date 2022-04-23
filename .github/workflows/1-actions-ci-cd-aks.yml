@@ -1,4 +1,4 @@
-name: Build & Deploy to AKS
+name: 1-actions-ci-cd-aks
 
 on:
   push:
