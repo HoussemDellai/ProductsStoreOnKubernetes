@@ -77,7 +77,7 @@ jobs:
       uses: hashicorp/terraform-github-actions@master  
       with:
         tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-        tf_actions_subcommand: 'fmt'
+        tf_actions_subcommand: 'fmt -check'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
        
