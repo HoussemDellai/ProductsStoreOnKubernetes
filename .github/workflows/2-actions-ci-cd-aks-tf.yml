@@ -64,8 +64,8 @@ jobs:
         files: infra/terraform.tfvars
       env:
         AKS_RESOURCE_GROUP: ${{ env.AKS_RESOURCE_GROUP }}
-        AKS_NAME: ${{ env.$AKS_NAME }}
-        ACR_NAME: ${{ env.$ACR_NAME }}
+        AKS_NAME: ${{ env.AKS_NAME }}
+        ACR_NAME: ${{ env.ACR_NAME }}
         SQL_INSTANCE_NAME: sqlforaks-tf-011
         DB_ADMIN_LOGIN: houssem
         DB_ADMIN_PASSWORD: "@Aa123456"
