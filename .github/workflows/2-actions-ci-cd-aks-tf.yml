@@ -11,13 +11,13 @@ on:
 
 jobs:
 
-  build:
+  build-deploy-aks:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
-      AKS_RESOURCE_GROUP:  rg-aks-cluster-tf
+      AKS_RESOURCE_GROUP: rg-aks-cluster-tf
       AKS_NAME: aks-cluster
     
     steps:
@@ -27,7 +27,6 @@ jobs:
     - name: Build Docker Image
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
-  
   
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
