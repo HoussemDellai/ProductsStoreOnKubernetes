@@ -52,23 +52,23 @@ jobs:
       with:
         tokenPrefix: __
         tokenSuffix: __
-        files: terraform.tfvars
+        files: infra/terraform.tfvars
       env:
         AKS_RESOURCE_GROUP: $AKS_RESOURCE_GROUP
         AKS_NAME: $AKS_NAME
         ACR_NAME: $ACR_NAME
-        SQL_INSTANCE_NAME: sqlforaks-github-2020
+        SQL_INSTANCE_NAME: sqlforaks-tf-011
         DB_ADMIN_LOGIN: houssem
         DB_ADMIN_PASSWORD: "@Aa123456"
-        STORAGE_NAME: storageforsqlgithub2020
-#    
-#    - name: Find and Replace
-#      uses: shitiomatic/str-replace@master
-#      with:
-#        find: "azurerm"
-#        replace: "local"
-#        include: "infra/backend.tf"
-#    
+        STORAGE_NAME: storageforsql011
+    
+    - name: Find and Replace
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "azurerm"
+        replace: "local"
+        include: "infra/backend.tf"
+    
 #    - name: 'Terraform Format'
 #      uses: hashicorp/terraform-github-actions@master  
 #      with:
