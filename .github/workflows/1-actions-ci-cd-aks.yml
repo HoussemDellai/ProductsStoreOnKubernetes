@@ -54,9 +54,9 @@ jobs:
         tokenPrefix: __ # optional, default is #{
         tokenSuffix: __ # optional, default is }#
       env:
-        DOCKER_REPOSITORY: houssemdocker
-        IMAGE_NAME: webapp
-        IMAGE_TAG: $GITHUB_RUN_NUMBER
+        DOCKER_REPOSITORY: ${{ env.DOCKER_REPOSITORY }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG }}
         
     - uses: Azure/k8s-deploy@v1
       with:
