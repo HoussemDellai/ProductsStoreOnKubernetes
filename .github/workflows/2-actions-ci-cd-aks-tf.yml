@@ -19,6 +19,7 @@ jobs:
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
       AKS_RESOURCE_GROUP: rg-aks-cluster-tf
       AKS_NAME: aks-cluster
+      ACR_NAME: acrforakstf
       TERRAFORM_VERSION: 1.1.9
       WORKING_DIRECTORY: infra
     
