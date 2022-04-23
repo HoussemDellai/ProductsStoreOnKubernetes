@@ -17,9 +17,9 @@ jobs:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
-      AKS_RESOURCE_GROUP: rg-aks-cluster-tf-012
+      AKS_RESOURCE_GROUP: rg-aks-cluster-tf-013
       AKS_NAME: aks-cluster
-      ACR_NAME: acrforakstf012
+      ACR_NAME: acrforakstf013
       TERRAFORM_VERSION: 1.1.9
       WORKING_DIRECTORY: infra
     
