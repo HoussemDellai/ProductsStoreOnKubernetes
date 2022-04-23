@@ -17,9 +17,12 @@ jobs:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
+      
       AKS_RESOURCE_GROUP: rg-aks-cluster-tf
       AKS_NAME: aks-cluster
-    
+      
+      TERRAFORM_VERSION: 1.1.9
+      
     steps:
 
     - uses: actions/checkout@v2
@@ -73,7 +76,7 @@ jobs:
     - name: 'Terraform Format'
       uses: hashicorp/terraform-github-actions@master  
       with:
-        tf_actions_version: 0.12.13
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
         tf_actions_subcommand: 'fmt'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
@@ -81,7 +84,7 @@ jobs:
     - name: 'Terraform Init'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.13
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
         tf_actions_subcommand: 'init'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
@@ -89,7 +92,7 @@ jobs:
     - name: 'Terraform Validate'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.13
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
         tf_actions_subcommand: 'validate'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
@@ -97,7 +100,7 @@ jobs:
     - name: 'Terraform Plan'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.13
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
@@ -105,7 +108,7 @@ jobs:
     - name: 'Terraform Apply'
       uses: hashicorp/terraform-github-actions@master
       with:
-        tf_actions_version: 0.12.13
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: './infra'
         tf_actions_comment: false
