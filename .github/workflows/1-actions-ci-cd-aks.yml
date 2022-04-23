@@ -15,7 +15,7 @@ jobs:
     env:
       DOCKER_REPOSITORY: houssemdocker # name of Docker Hub ID
       IMAGE_NAME: webapp
-      IMAGE_TAG: ${{ env.GITHUB_RUN_NUMBER }}
+      IMAGE_TAG: ${{ github.run_number }} # $GITHUB_RUN_NUMBER
       
       CLUSTER_NAME: aks-cluster
       RESOURSE_GROUP: rg-aks-cluster
