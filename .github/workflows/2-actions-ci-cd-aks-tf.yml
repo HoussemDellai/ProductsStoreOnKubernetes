@@ -2,9 +2,10 @@ name: 2-actions-ci-cd-aks-tf
 
 on:
   push:
-    branches: none # [ main ]
+    branches: [ main ]
+    paths: .github/workflows/2-actions-ci-cd-aks-tf.yml
   pull_request:
-    branches:  none # [ release ]
+    branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -14,11 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker
-      IMAGE_NAME: web-app-github
-      IMAGE_TAG: $GITHUB_RUN_NUMBER # ${{ github.sha }}
-      AKS_RESOURCE_GROUP:  resourcegroup-aks-k8s-github-2020
-      AKS_NAME: aks-k8s-github-2020 
-      ACR_NAME: acrforaksgithub2020
+      IMAGE_NAME: web-app
+      IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
+      AKS_RESOURCE_GROUP:  rg-aks-cluster-tf
+      AKS_NAME: aks-cluster
     
     steps:
 
@@ -27,7 +27,19 @@ jobs:
     - name: Build Docker Image
       run:
         docker build ./MvcApp/ --file ./MvcApp/Dockerfile --tag $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER --build-arg=token=ZGEzNTQ5Y2QyNjAx --no-cache
-    
+  
+  
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      continue-on-error: true
+      with:
+        image-ref: 'docker.io/${{ env.DOCKER_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'MEDIUM,HIGH,CRITICAL'
+  
     - name: Login to Docker Hub
       run: |
         echo "${{ secrets.DOCKER_REPOSITORY_PASSWORD }}" | docker login -u $DOCKER_REPOSITORY --password-stdin
@@ -35,11 +47,6 @@ jobs:
     - name: Push Image to Docker Hub
       run:
         docker push $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
-        
-    - name: Scan Docker Image using Trivy
-      continue-on-error: true
-      run:
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy --exit-code 0 --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed $DOCKER_REPOSITORY/$IMAGE_NAME:$GITHUB_RUN_NUMBER
 
     - name: Replace tokens
       uses: cschleiden/replace-tokens@v1.0
@@ -107,19 +114,22 @@ jobs:
     - uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: $AKS_NAME
-        resource-group: $AKS_RESOURCE_GROUP
+        cluster-name: ${{ env.AKS_NAME }}
+        resource-group: ${{ env.$AKS_RESOURCE_GROUP }}
         
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
           kubernetes/mssql-pv.azure.yaml
+          kubernetes/mssql-configmap.yaml
           kubernetes/mssql-secret.yaml
           kubernetes/mssql-deployment.yaml
           kubernetes/mvc-deployment.azure.yaml
-          kubernetes/mssql-configmap.yaml
     
-    - name: Run Kube Advisor to check for Resource Limits
+    - name: Run Kube-Bench to check cluster config
       continue-on-error: true
-      run:
-        kubectl run --rm -i -t kubeadvisor --image=mcr.microsoft.com/aks/kubeadvisor --restart=Never > PodResourceLimits.txt
+      run: |
+        kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job-aks.yaml
+        sleep 30s
+        kubectl logs job.batch/kube-bench
+        kubectl delete job.batch/kube-bench
