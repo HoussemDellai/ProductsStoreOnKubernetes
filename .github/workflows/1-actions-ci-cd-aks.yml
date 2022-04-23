@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths: .github/workflows/1-actions-ci-cd-aks.yml
   pull_request:
-    branches:  none # [ release ]
+    branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -81,3 +81,4 @@ jobs:
         kubectl apply -f https://raw.githubusercontent.com/aquasecurity/kube-bench/main/job-aks.yaml
         sleep 30s
         kubectl logs job.batch/kube-bench
+        kubectl delete job.batch/kube-bench
