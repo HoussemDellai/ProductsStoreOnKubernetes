@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  build:
+  build-deploy-aks:
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: houssemdocker # name of Docker Hub ID
