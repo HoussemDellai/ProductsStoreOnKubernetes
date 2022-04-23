@@ -115,7 +115,7 @@ jobs:
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: ${{ env.AKS_NAME }}
-        resource-group: ${{ env.$AKS_RESOURCE_GROUP }}
+        resource-group: ${{ env.AKS_RESOURCE_GROUP }}
         
     - uses: Azure/k8s-deploy@v1
       with:
