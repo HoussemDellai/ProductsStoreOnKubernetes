@@ -17,9 +17,9 @@ jobs:
       DOCKER_REPOSITORY: houssemdocker
       IMAGE_NAME: web-app
       IMAGE_TAG: ${{ github.run_number }} # ${{ github.sha }}
-      AKS_RESOURCE_GROUP: rg-aks-cluster-tf-019
+      AKS_RESOURCE_GROUP: rg-aks-cluster-tf-023
       AKS_NAME: aks-cluster
-      ACR_NAME: acrforakstf019
+      ACR_NAME: acrforakstf023
       TERRAFORM_VERSION: 1.1.9
       WORKING_DIRECTORY: infra
     
@@ -119,6 +119,17 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       run: terraform apply -auto-approve
+
+    - name: Replace Image Name in Deployment
+      uses: cschleiden/replace-tokens@v1
+      with:
+        files: '["kubernetes/*.yaml"]'
+        tokenPrefix: __ # optional, default is #{
+        tokenSuffix: __ # optional, default is }#
+      env:
+        DOCKER_REPOSITORY: ${{ env.DOCKER_REPOSITORY }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
     # Set the target AKS cluster.
     - uses: Azure/aks-set-context@v1
