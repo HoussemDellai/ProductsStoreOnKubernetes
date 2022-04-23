@@ -1,10 +1,12 @@
-name: Build & Deploy to AKS with Terraform
+name: 3-actions-ci-cd-aks-tf-backend
 
 on:
-#  push:
-#    branches: [ master ]
+  push:
+    branches: none # [ main ]
   pull_request:
-    branches: [ dev ]
+    branches:  none # [ release ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 env:
   LOCATION: westeurope
