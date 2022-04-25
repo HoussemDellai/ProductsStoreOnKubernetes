@@ -2,9 +2,10 @@ name: 4-actions-ci-cd-aks-tf-backend-jobs
 
 on:
   push:
-    branches: none # [ main ]
+    branches: [ main ]
+    paths: .github/workflows/4-actions-ci-cd-aks-tf-backend-jobs.yml
   pull_request:
-    branches:  none # [ release ]
+    branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -49,7 +50,7 @@ jobs:
     - name: Create storage for tfstate
       uses: azure/CLI@v1
       with:
-        azcliversion: 2.27.2
+        azcliversion: 2.35.0
         inlineScript: |
           # Create the resource group
           az group create -n $INFRA_RESOURCE_GROUP -l $LOCATION          
