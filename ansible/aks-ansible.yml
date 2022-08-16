@@ -30,8 +30,8 @@
   #     secret_name: DatabasePassword
   #     secret_value: My_Pass_Sec
   #     keyvault_uri: https://houssemkv.vault.azure.net/
-  #     client_id: "9921beb6-7d53-49da-83b4-c8a6a989b05a"
-  #     tenant: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+  #     client_id: "xxxxxxxxx-7d53-49da-83b4-c8a6a989b05a"
+  #     tenant: "xxxxxxxxx-86f1-41af-91ab-2d7cd011db47"
 
   - name: Create an azure container registry
     azure_rm_containerregistry:
